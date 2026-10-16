@@ -2533,7 +2533,7 @@ function qChasse(e){
   $("#zero").onclick=()=>done(!hasErr,null,true);
 }
 function promptFor(e){
-  if(e.cat==="I") return "Fais le test : remplace par « mordre » ou « mordu ». Puis demande-toi : qui ?";
+  if(e.cat==="I") return PROFILE.level==="ce2"?"Fais le test : remplace par « mordre » ou « mordu ».":"Fais le test : remplace par « mordre » ou « mordu ». Puis demande-toi : qui ?";
   if(e.cat==="C") return "Quel temps, quel mode ? Cherche ce qui le commande : si, que, bien que, après que, quand…";
   if(e.cat==="V") return "Lis toute la phrase : quel mot a le bon sens ? Attention aux mots presque jumeaux.";
   if(e.sub==="N") return "Vingt et cent prennent un s seulement s'ils sont multipliés et en fin de nombre. Mille, jamais.";
@@ -3374,7 +3374,8 @@ function catRate(cat){
 function bossRule(B){
   const cm2=isPrim(PROFILE.level);
   switch(B.cat){
-    case "I": return "Remplace par « mordre » ou « mordu ». « Mordre » marche : -er. « Mordu » marche : -é. Et après être, demande-toi « qui ? » pour accorder : -ée, -és, -ées.";
+    case "I": if(PROFILE.level==="ce2") return "Remplace par « mordre » ou « mordu ». « Mordre » marche : -er. « Mordu » marche : -é.";
+      return "Remplace par « mordre » ou « mordu ». « Mordre » marche : -er. « Mordu » marche : -é. Et après être, demande-toi « qui ? » pour accorder : -ée, -és, -ées.";
     case "H": return cm2?"Remplace pour vérifier. a / à : « avait ». et / est : « était ». on / ont : « il » ou « avaient ». son / sont : « mon » ou « étaient ».":"Remplace pour vérifier : c'est / s'est (cela est ?), leur / leurs (plusieurs ?), quand / quant (lorsque ?), près / prêt (préparé ?).";
     case "A": if(B.kind===3) return "Chaque, c'est un seul : chaque joueur, chaque matin. Par jour = chaque jour. Et mille ne prend jamais de s.";
       return cm2?"Trouve d'abord qui commande l'accord, puis choisis. Le mot collé au verbe n'est pas toujours le chef ! Vingt et cent prennent un s seulement s'ils sont multipliés et en fin de nombre."
