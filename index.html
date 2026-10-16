@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chasseur de fautes</title>
-<meta name="description" content="Jeu d'orthographe gratuit pour le CM2 : accords, é ou er, homophones, dictées. Sans pub, sans compte, rien n'est envoyé sur Internet.">
+<meta name="description" content="Jeu d'orthographe gratuit, du CE2 à la 2nde : accords, é ou er, homophones, dictées. Sans pub, sans compte, rien n'est envoyé sur Internet.">
 <meta name="theme-color" content="#eef2f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e1525" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -214,6 +214,7 @@ body.guest .board .stats,body.guest .board .lvl-row,body.guest .board .bar{displ
 .lvl-chip small{color:var(--muted);font-size:12.5px;line-height:1.3}
 .lvl-chip.on{border-color:var(--ball);background:color-mix(in srgb,var(--ball) 16%,var(--surface))}
 .lvl-chip:disabled{opacity:.42;cursor:not-allowed}
+.lvl-hint{margin:-6px 0 2px;color:var(--muted);font-size:14px}
 .go-big{align-self:stretch;font-size:22px;padding:16px}
 .lb{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .lb-row{display:grid;grid-template-columns:32px 1fr auto auto;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;background:var(--surface-2)}
@@ -263,7 +264,9 @@ details summary{cursor:pointer}
 /* Édition classe */
 .intro{margin:0;color:var(--muted)}
 .hello{display:flex;flex-direction:column;gap:12px}
-.hello label{font-family:var(--display);font-size:20px;color:var(--court)}
+.hello label,.hello .lbl{font-family:var(--display);font-size:20px;color:var(--court)}
+.hello .lvl-hint{margin:-8px 0 0}
+.hello .lvl-chip{cursor:pointer}
 .hello input{width:100%;font:inherit;font-size:24px;padding:10px 14px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
 #tryGuest{align-self:center}
 .adult{display:flex;flex-direction:column;gap:12px}
@@ -329,12 +332,12 @@ const CHASSE = [
  ["La tour a nécessité des tonnes de {peintures|peinture}.", "De la peinture, ça ne se compte pas : des tonnes de peinture, comme des litres d'eau. Pluriel en trop, comme dans ta dictée !"],
  ["Les plus riches {s'installe|s'installent} en bas.", "Qui s'installe ? Les plus riches, donc « ils s'installent »."],
  ["Naruto mange trois bols et en {redemandent|redemande} un quatrième.", "Qui redemande ? Naruto, tout seul (même s'il mange comme quatre). Donc « redemande »."],
- ["Tanjiro porte Nezuko dans une boîte {fermé|fermée}.", "Qui est fermé ? La boîte : féminin, donc « fermée »."],
- ["Zenitsu s'endort et {deviennent|devient} soudain invincible.", "Qui devient ? Zenitsu, un seul. Même endormi, il compte pour un."],
- ["Inosuke {portes|porte} un masque de sanglier.", "Qui porte ? Inosuke, donc « il porte ». Le -s, c'est pour « tu portes »."],
+ ["Tanjiro porte sa petite sœur dans une boîte {fermé|fermée}.", "Qui est fermé ? La boîte : féminin, donc « fermée »."],
+ ["Le chevalier peureux s'endort et {deviennent|devient} soudain invincible.", "Qui devient ? Le chevalier, un seul. Même endormi, il compte pour un."],
+ ["Le ninja {portes|porte} un masque de sanglier.", "Qui porte ? Le ninja, donc « il porte ». Le -s, c'est pour « tu portes »."],
  ["Conan a résolu l'enquête avant les policiers.", "Zéro faute ! « a résolu » : avec avoir, pas d'accord avec le sujet."],
- ["Kogoro dort pendant que Conan {parles|parle} à sa place.", "Qui parle ? Conan, donc « il parle », sans s."],
- ["Le professeur Agasa a {inventer|inventé} une montre incroyable.", "« a mordu », donc « é »."],
+ ["Le détective dort pendant que Conan {parles|parle} à sa place.", "Qui parle ? Conan, donc « il parle », sans s."],
+ ["Le savant a {inventer|inventé} une montre incroyable.", "« a mordu », donc « é »."],
  ["Senku veut {rallumé|rallumer} la civilisation tout seul.", "« veut mordre », donc « er »."],
  ["Les statues de pierre {son|sont} partout dans la forêt.", "Remplace par « étaient » : les statues étaient partout. Donc « sont »."],
  ["Senku est sûr de lui à dix milliards de pour cent.", "Zéro faute ! « milliards » prend un s : il y en a dix."],
@@ -346,10 +349,10 @@ const CHASSE = [
  ["Mon chat {à|a} mangé mes devoirs, promis.", "« avait mangé » marche, donc « a »."],
  ["La maîtresse ne {croient|croit} pas l'histoire du chat.", "Qui croit ? La maîtresse, une seule. Donc « croit »."],
  ["Les ninjas {court|courent} sur les toits du village.", "Qui court ? Les ninjas, donc « ils courent »."],
- ["Sasuke et Naruto se {dispute|disputent} encore.", "Deux garçons, donc « ils se disputent »."],
- ["Kakashi arrive toujours en retard avec une excuse bizarre.", "Zéro faute ! Une excuse, un retard, un Kakashi : tout est au singulier."],
+ ["Mario et Luigi se {dispute|disputent} encore.", "Mario et Luigi, ça fait deux : « ils se disputent »."],
+ ["Le chevalier arrive toujours en retard avec une excuse bizarre.", "Zéro faute ! Une excuse, un retard, un chevalier : tout est au singulier."],
  ["Les démons {détestes|détestent} le soleil.", "Qui déteste ? Les démons, donc « ils détestent »."],
- ["Ran a {donner|donné} un coup de karaté au voleur.", "« a mordu », donc « é »."],
+ ["La policière a {donner|donné} un coup de karaté au voleur.", "« a mordu », donc « é »."],
  ["Le voleur est {arrêter|arrêté} par la police.", "« est mordu », donc « é ». Le voleur, un seul garçon : « é » tout court."],
  ["Nous {mangeont|mangeons} des crêpes ce soir.", "Avec « nous », c'est toujours « -ons ». « -ont », c'est pour « ils »."],
  ["Le ballon {et|est} crevé, le match est fini.", "« le ballon était crevé » marche, donc « est »."],
@@ -382,12 +385,12 @@ const MORDRE = [
  {s:"Ce sont des galeries ___ vomitoires.", o:["appeler","appelé","appelées","appelés"], a:2, w:"« des galeries mordues », donc « é ». Qui ? Les galeries : « ées »."},
  {s:"Naruto a ___ tous ses bols de nouilles.", o:["dévorer","dévoré","dévorés"], a:1, w:"« a mordu », donc « é »."},
  {s:"Tanjiro doit ___ sa petite sœur.", o:["protéger","protégé","protégée"], a:0, w:"« doit mordre », donc « er »."},
- {s:"Nezuko est ___ dans sa boîte.", o:["cacher","caché","cachée"], a:2, w:"« est mordue », donc « é ». Qui ? Nezuko : « ée »."},
- {s:"Zenitsu a ___ de peur en voyant le démon.", o:["crier","crié","criés"], a:1, w:"« a mordu », donc « é »."},
+ {s:"La petite sœur de Tanjiro est ___ dans sa boîte.", o:["cacher","caché","cachée"], a:2, w:"« est mordue », donc « é ». Qui ? La petite sœur : « ée »."},
+ {s:"Le chevalier a ___ de peur en voyant le démon.", o:["crier","crié","criés"], a:1, w:"« a mordu », donc « é »."},
  {s:"Les démons sont ___ par le soleil.", o:["brûler","brûlé","brûlés","brûlées"], a:2, w:"« sont mordus », donc « é ». Qui ? Les démons : « és »."},
  {s:"Conan va ___ le coupable.", o:["démasquer","démasqué","démasqués"], a:0, w:"« va mordre », donc « er »."},
  {s:"La coupable est enfin ___ !", o:["démasquer","démasqué","démasquée"], a:2, w:"« est mordue », donc « é ». Qui ? La coupable : « ée »."},
- {s:"Kogoro est ___ par la fléchette de Conan.", o:["toucher","touché","touchés"], a:1, w:"« est mordu », donc « é ». Qui ? Kogoro, un seul : « é »."},
+ {s:"Le détective est ___ par la fléchette de Conan.", o:["toucher","touché","touchés"], a:1, w:"« est mordu », donc « é ». Qui ? Le détective, un seul : « é »."},
  {s:"Senku a ___ du savon avec des coquillages.", o:["fabriquer","fabriqué","fabriqués"], a:1, w:"« a mordu », donc « é »."},
  {s:"Les statues vont se ___ une par une.", o:["réveiller","réveillé","réveillées"], a:0, w:"« vont se mordre », donc « er »."},
  {s:"Les villageois sont ___ depuis trois mille ans.", o:["pétrifier","pétrifié","pétrifiés","pétrifiées"], a:2, w:"« sont mordus », donc « é ». Qui ? Les villageois : « és »."},
@@ -405,7 +408,7 @@ const MORDRE = [
  {s:"Ils sont ___ en retard au match.", o:["arriver","arrivé","arrivés","arrivées"], a:2, w:"« sont mordus », donc « é ». Qui ? Ils : « és »."},
  {s:"On va ___ des crêpes ce soir.", o:["préparer","préparé","préparées"], a:0, w:"« on va mordre », donc « er »."},
  {s:"Les crêpes sont ___ en deux minutes.", o:["dévorer","dévoré","dévorées","dévorés"], a:2, w:"« sont mordues », donc « é ». Qui ? Les crêpes : « ées »."},
- {s:"Sasuke a ___ de village.", o:["changer","changé","changés"], a:1, w:"« a mordu », donc « é »."}
+ {s:"Le ninja a ___ de village.", o:["changer","changé","changés"], a:1, w:"« a mordu », donc « é »."}
 ];
 
 // Les jumeaux (homophones)
@@ -424,8 +427,8 @@ const JUMEAUX = [
  {s:"La Switch 2 ___ sortie en 2025.", o:["et","est"], a:1, w:"« était sortie » marche, donc « est »."},
  {s:"Naruto ___ faim, comme d'habitude.", o:["a","à"], a:0, w:"« Naruto avait faim » marche, donc « a »."},
  {s:"Tanjiro part ___ la chasse aux démons.", o:["a","à"], a:1, w:"« avait la chasse » ne marche pas, donc « à »."},
- {s:"Zenitsu ___ peureux, mais très rapide.", o:["et","est"], a:1, w:"« Zenitsu était peureux » marche, donc « est »."},
- {s:"Inosuke crie ___ fonce sans réfléchir.", o:["et","est"], a:0, w:"« crie et puis fonce » marche, donc « et »."},
+ {s:"Le chevalier ___ peureux, mais très rapide.", o:["et","est"], a:1, w:"« Le chevalier était peureux » marche, donc « est »."},
+ {s:"Le sanglier crie ___ fonce sans réfléchir.", o:["et","est"], a:0, w:"« crie et puis fonce » marche, donc « et »."},
  {s:"Les détectives ___ trouvé un indice.", o:["on","ont"], a:1, w:"« avaient trouvé » marche, donc « ont »."},
  {s:"___ dit que Conan est un génie.", o:["On","Ont"], a:0, w:"« Il dit » marche, donc « On »."},
  {s:"Les statues ___ en pierre.", o:["son","sont"], a:1, w:"« étaient en pierre » marche, donc « sont »."},
@@ -437,10 +440,10 @@ const JUMEAUX = [
  {s:"Le gardien ___ arrêté le penalty !", o:["a","à"], a:0, w:"« avait arrêté » marche, donc « a »."},
  {s:"Il a marqué ___ la dernière minute.", o:["a","à"], a:1, w:"« avait la dernière minute » ne marche pas, donc « à »."},
  {s:"Mes chaussettes ___ sous le lit depuis lundi.", o:["son","sont"], a:1, w:"« étaient sous le lit » marche, donc « sont »."},
- {s:"Ran prête ___ parapluie à Conan.", o:["son","sont"], a:0, w:"« prête mon parapluie » marche, donc « son »."},
+ {s:"Ma sœur prête ___ parapluie à Conan.", o:["son","sont"], a:0, w:"« prête mon parapluie » marche, donc « son »."},
  {s:"Regarde ___ démons, au bout de la rue !", o:["ses","ces"], a:1, w:"On les montre du doigt, donc « ces »."},
  {s:"Tanjiro protège ___ amis : ce sont les siens.", o:["ses","ces"], a:0, w:"Ce sont les siens, donc « ses »."},
- {s:"___ dirait que Zenitsu dort encore.", o:["On","Ont"], a:0, w:"« Il dirait » marche, donc « On »."},
+ {s:"___ dirait que le dragon dort encore.", o:["On","Ont"], a:0, w:"« Il dirait » marche, donc « On »."},
  {s:"La pizza ___ froide, mais je la mange quand même.", o:["et","est"], a:1, w:"« était froide » marche, donc « est »."},
  {s:"Mon chien ___ mon chat sont amis.", o:["et","est"], a:0, w:"« et puis mon chat » marche, donc « et »."},
  {s:"Il y a très ___ de cartes dorées.", o:["peu","peut"], a:0, w:"« pas beaucoup », donc « peu »."}
@@ -456,7 +459,7 @@ const ACCORDS = [
  {s:"C'est une victoire ___ !", o:["éclatante","éclatant","éclatantes"], a:0, w:"Une victoire, féminin singulier : « éclatante »."},
  {s:"Les gardiens sont ___.", o:["fatigué","fatigués","fatiguées"], a:1, w:"Qui est fatigué ? Les gardiens : masculin pluriel, « fatigués »."},
  {s:"Les filles sont ___ de leur match.", o:["content","contentes","contents"], a:1, w:"Les filles : féminin pluriel, « contentes »."},
- {s:"Tanjiro et Nezuko ___ ensemble.", o:["voyage","voyagent","voyages"], a:1, w:"Deux personnes, donc « ils voyagent »."},
+ {s:"Tanjiro et sa sœur ___ ensemble.", o:["voyage","voyagent","voyages"], a:1, w:"Tanjiro et sa sœur, ça fait deux : « ils voyagent »."},
  {s:"Le chien des voisins ___ toute la nuit.", o:["aboie","aboient"], a:0, w:"Qui aboie ? Le chien, un seul. Les voisins ne commandent pas."},
  {s:"Les cartes de Léo ___ rares.", o:["est","sont"], a:1, w:"Qui est rare ? Les cartes : « sont »."},
  {s:"Le sac des joueurs ___ très lourd.", o:["est","sont"], a:0, w:"Qui est lourd ? Le sac, un seul : « est »."},
@@ -488,7 +491,7 @@ const DICTEES = [
  "Les spectateurs applaudissent les joueuses.",
  "Tanjiro protège sa petite sœur.",
  "Les démons détestent le soleil.",
- "Zenitsu s'endort et devient très fort.",
+ "Le chevalier s'endort et devient très fort.",
  "Conan a trouvé le coupable.",
  "Les indices sont cachés dans la cuisine.",
  "Senku a fabriqué du savon.",
@@ -514,36 +517,41 @@ const DICTEES = [
    c = catégorie : A = accords et participes · H = homophones et mots pièges · C = conjugaison et modes
    ===================================================================== */
 const CLASSES=[
- {id:"cm2",name:"CM2",coef:1,desc:"Accords, é ou er, homophones simples"},
+ {id:"ce2",name:"CE2",coef:0.7,desc:"Pluriels, accords simples, a / à, et / est, on / ont, son / sont"},
+ {id:"cm1",name:"CM1",coef:0.85,desc:"Accords dans le groupe du nom, é ou er, participe avec être"},
+ {id:"cm2",name:"CM2",coef:1,desc:"Accords, é ou er, homophones, vingt et cent"},
+ {id:"6e",name:"6e",coef:1.1,desc:"Participe avec avoir, impératif, conditionnel, ce / se, leur / leurs"},
  {id:"5e",name:"5e",coef:1.25,desc:"c'est / s'est, leur / leurs, quand / quant, futur ou conditionnel"},
  {id:"4e",name:"4e",coef:1.5,desc:"Participe passé avec avoir, subjonctif, quelque, pluriels composés"},
  {id:"3e",name:"3e",coef:1.8,desc:"Verbes pronominaux, tout, couleurs, nombres, quoique / quoi que"},
  {id:"2nde",name:"2nde",coef:2.2,desc:"Participe + infinitif, coûté, demi, ci-joint, la plupart"},
  {id:"expert",name:"Expert",coef:3,desc:"Les pièges du Bescherelle, façon dictée de Pivot"}
 ];
-const classOf=id=>CLASSES.find(c=>c.id===id)||CLASSES[0];
+const classOf=id=>CLASSES.find(c=>c.id===id)||CLASSES.find(c=>c.id==="cm2");
+const PRIMARY=["ce2","cm1","cm2"];
+const isPrim=L=>PRIMARY.includes(L);
 
 const BANK={
 "5e":[
- {s:"Zenitsu ___ endormi en plein combat.",o:["s'est","c'est","ses","ces"],a:0,c:"H",w:"On peut dire « il s'était endormi » : c'est le verbe s'endormir → s'est. « C'est » veut dire « cela est »."},
+ {s:"Le gardien ___ endormi en plein match.",o:["s'est","c'est","ses","ces"],a:0,c:"H",w:"On peut dire « il s'était endormi » : c'est le verbe s'endormir → s'est. « C'est » veut dire « cela est »."},
  {s:"___ incroyable : Senku a fabriqué une radio avec des pierres !",o:["C'est","S'est","Ces","Ses"],a:0,c:"H",w:"On peut dire « cela est incroyable » → c'est."},
  {s:"Luffy ___ juré de devenir le roi des pirates.",o:["s'est","c'est","ses","ces"],a:0,c:"H",w:"Verbe pronominal « se jurer » : il s'était juré → s'est."},
- {s:"Sasuke ___ méfie de tout le monde.",o:["se","ce"],a:0,c:"H",w:"On peut dire « je me méfie » : c'est le pronom se, collé au verbe. « Ce » va devant un nom ou veut dire « cela »."},
- {s:"Regarde ___ ballon : toute l'équipe de Karasuno l'a signé !",o:["ce","se"],a:0,c:"H",w:"Devant un nom, on peut dire « ce ballon-là » → déterminant ce."},
- {s:"Les joueurs de Karasuno écoutent ___ entraîneur.",o:["leur","leurs"],a:0,c:"H",w:"Ils n'ont qu'un entraîneur : « leur » au singulier. Avec plusieurs : leurs entraîneurs."},
+ {s:"Le chat ___ méfie de tout le monde.",o:["se","ce"],a:0,c:"H",w:"On peut dire « je me méfie » : c'est le pronom se, collé au verbe. « Ce » va devant un nom ou veut dire « cela »."},
+ {s:"Regarde ___ ballon : toute l'équipe de volley l'a signé !",o:["ce","se"],a:0,c:"H",w:"Devant un nom, on peut dire « ce ballon-là » → déterminant ce."},
+ {s:"Les joueurs de volley écoutent ___ entraîneur.",o:["leur","leurs"],a:0,c:"H",w:"Ils n'ont qu'un entraîneur : « leur » au singulier. Avec plusieurs : leurs entraîneurs."},
  {s:"Sacha ___ donne des baies après chaque combat.",o:["leur","leurs"],a:0,c:"H",w:"Devant un verbe, « leur » est un pronom (= à eux) : il ne prend jamais de s."},
  {s:"Les chevaliers rangent ___ épées dans le coffre.",o:["leurs","leur"],a:0,c:"H",w:"Devant un nom au pluriel (des épées), le déterminant prend un s : leurs épées."},
  {s:"Le penalty ? Le gardien ___ arrêté du bout des doigts.",o:["l'a","la","là"],a:0,c:"H",w:"On peut dire « il l'avait arrêté » → l'a."},
  {s:"Pose ta manette ___, sur la table.",o:["là","la","l'a"],a:0,c:"H",w:"« Là » indique un endroit : on peut dire « là-bas »."},
- {s:"Nami déplie ___ carte au trésor.",o:["la","là","l'a"],a:0,c:"H",w:"Devant un nom, c'est l'article « la » (on peut dire « une carte »)."},
+ {s:"La pirate déplie ___ carte au trésor.",o:["la","là","l'a"],a:0,c:"H",w:"Devant un nom, c'est l'article « la » (on peut dire « une carte »)."},
  {s:"J'ai rangé ___ cartes rares dans le classeur.",o:["mes","mais","met"],a:0,c:"H",w:"« Mes » = les miennes. « Mais » marque une opposition."},
  {s:"Il pleut, ___ le match de foot continue.",o:["mais","mes","met"],a:0,c:"H",w:"On peut dire « pourtant » → mais."},
  {s:"Mon frère ___ prêté sa Switch 2 pour la soirée.",o:["m'a","ma"],a:0,c:"H",w:"On peut dire « il m'avait prêté » → m'a."},
- {s:"___ à Zenitsu, il dort encore.",o:["Quant","Quand","Qu'en"],a:0,c:"H",w:"« Quant à » veut dire « en ce qui concerne »."},
+ {s:"___ à mon frère, il dort encore.",o:["Quant","Quand","Qu'en"],a:0,c:"H",w:"« Quant à » veut dire « en ce qui concerne »."},
  {s:"___ la cloche sonne, tout le monde file au gymnase.",o:["Quand","Quant","Qu'en"],a:0,c:"H",w:"« Quand » = lorsque."},
  {s:"Luffy fonce à l'aventure ___ réfléchir.",o:["sans","s'en","c'en"],a:0,c:"H",w:"« Sans » est le contraire de « avec »."},
  {s:"Dès que le match finit, Conan ___ va enquêter.",o:["s'en","sans","c'en"],a:0,c:"H",w:"On peut dire « je m'en vais » → s'en (se + en)."},
- {s:"Sasuke ___ croit plus du tout.",o:["n'y","ni"],a:0,c:"H",w:"« Il n'y croit plus » = il ne croit plus à cela → n'y (ne + y)."},
+ {s:"Le ninja ___ croit plus du tout.",o:["n'y","ni"],a:0,c:"H",w:"« Il n'y croit plus » = il ne croit plus à cela → n'y (ne + y)."},
  {s:"Le village est si calme que Naruto ___ sent bien.",o:["s'y","si"],a:0,c:"H",w:"« Il s'y sent bien » = il se sent bien là-bas → s'y (se + y)."},
  {s:"Chaque matin, je ___ mon entraînement de volley.",o:["faisais","fis"],a:0,c:"C",w:"« Chaque matin » = une habitude → imparfait : je faisais."},
  {s:"Soudain, je ___ dans le vide pour rattraper le ballon.",o:["sautai","sautais"],a:0,c:"C",w:"Action soudaine et unique dans un récit → passé simple : je sautai (comme « nous sautâmes »)."},
@@ -570,8 +578,8 @@ const BANK={
  {s:"Les cartes que Léo a ___ hier sont rares.",o:["achetées","acheté","achetés"],a:0,c:"A",w:"Avec avoir, le participe s'accorde avec le COD s'il est placé AVANT : que = les cartes → achetées."},
  {s:"Léo a ___ trois cartes rares.",o:["acheté","achetées"],a:0,c:"A",w:"Le COD (trois cartes) est APRÈS le verbe : pas d'accord avec avoir."},
  {s:"Les potions ? Link les a toutes ___.",o:["bues","bu"],a:0,c:"A",w:"« les » = les potions, placé avant avoir → accord : bues."},
- {s:"Quelle victoire Karasuno a ___ !",o:["remportée","remporté"],a:0,c:"A",w:"Le COD (quelle victoire) est placé avant → remportée."},
- {s:"Nezuko s'est ___ dans sa boîte.",o:["cachée","caché"],a:0,c:"A",w:"Elle a caché qui ? elle-même (s', placé avant) → cachée."},
+ {s:"Quelle victoire notre équipe a ___ !",o:["remportée","remporté"],a:0,c:"A",w:"Le COD (quelle victoire) est placé avant → remportée."},
+ {s:"La princesse s'est ___ dans la tour.",o:["cachée","caché"],a:0,c:"A",w:"Elle a caché qui ? elle-même (s', placé avant) → cachée."},
  {s:"Les dresseuses se sont ___ pour le tournoi.",o:["préparées","préparé"],a:0,c:"A",w:"Elles ont préparé qui ? elles-mêmes (se, placé avant) → préparées."},
  {s:"Les deux équipes se sont ___ en finale.",o:["affrontées","affronté"],a:0,c:"A",w:"Elles ont affronté qui ? l'une l'autre (se = COD placé avant) → affrontées."},
  {s:"Les Avengers ont ___ le monde une fois de plus.",o:["sauvé","sauvés"],a:0,c:"A",w:"Le COD (le monde) est après le verbe : pas d'accord avec avoir."},
@@ -585,15 +593,15 @@ const BANK={
  {s:"___ belle frappe !",o:["Quelle","Qu'elle","Quel"],a:0,c:"H",w:"Devant un nom féminin (frappe) → quelle. On ne pourrait pas dire « qu'il »."},
  {s:"Hermione ? Je crois ___ va gagner le concours.",o:["qu'elle","quelle"],a:0,c:"H",w:"On peut dire « je crois qu'il va gagner » → qu'elle (que + elle)."},
  {s:"Il reste ___ secondes avant la fin du match.",o:["quelques","quelque"],a:0,c:"H",w:"Quelques = plusieurs : pluriel."},
- {s:"Kakashi est parti depuis ___ temps.",o:["quelque","quelques"],a:0,c:"H",w:"« Quelque temps » = un certain temps : singulier, le temps ne se compte pas."},
+ {s:"Le professeur est parti depuis ___ temps.",o:["quelque","quelques"],a:0,c:"H",w:"« Quelque temps » = un certain temps : singulier, le temps ne se compte pas."},
  {s:"Le Faucon Millenium est ___ à décoller.",o:["prêt","près"],a:0,c:"H",w:"Prêt = préparé (prête au féminin). Près = à côté."},
  {s:"Spider-Man se cache ___ de la tour des Avengers.",o:["près","prêt"],a:0,c:"H",w:"Près de = à côté de."},
- {s:"Kakashi aurait pu arriver ___ !",o:["plus tôt","plutôt"],a:0,c:"H",w:"Plus tôt = le contraire de plus tard."},
+ {s:"Le bus aurait pu arriver ___ !",o:["plus tôt","plutôt"],a:0,c:"H",w:"Plus tôt = le contraire de plus tard."},
  {s:"Je préfère le foot, ou ___ le volley.",o:["plutôt","plus tôt"],a:0,c:"H",w:"Plutôt = de préférence."},
  {s:"Tu es ___ ranger ta chambre avant de jouer.",o:["censé","sensé"],a:0,c:"H",w:"Censé = supposé. Sensé = qui a du bon sens."},
  {s:"Il faut s'entraîner ___ pour battre Aoba Johsai.",o:["davantage","d'avantage"],a:0,c:"H",w:"Davantage (en un mot) = plus. « D'avantage » ne s'emploie que dans « pas d'avantage » (pas d'atout)."},
  {s:"Il faut que tu ___ tes devoirs avant Zelda.",o:["fasses","fais"],a:0,c:"C",w:"« Il faut que » → subjonctif : que tu fasses."},
- {s:"Bien que Zenitsu ___ peur, il se bat.",o:["ait","a","est"],a:0,c:"C",w:"« Bien que » → subjonctif : qu'il ait."},
+ {s:"Bien que le chevalier ___ peur, il se bat.",o:["ait","a","est"],a:0,c:"C",w:"« Bien que » → subjonctif : qu'il ait."},
  {s:"Je veux que tu ___ là à l'heure pour le match.",o:["sois","soit","es"],a:0,c:"C",w:"Subjonctif de être : que tu sois (avec un s). « Soit » va avec il ou elle."},
  {s:"Il faut que Tanjiro ___ son épée.",o:["prenne","prend"],a:0,c:"C",w:"« Il faut que » → subjonctif : qu'il prenne."},
  {s:"Si j'avais su, je ___ venu plus tôt.",o:["serais","serai"],a:0,c:"C",w:"Si + plus-que-parfait → conditionnel passé : je serais venu."},
@@ -611,7 +619,7 @@ const BANK={
  {s:"Ils se sont ___ toute la soirée.",o:["parlé","parlés"],a:0,c:"A",w:"On parle À quelqu'un : « se » est COI → participe invariable."},
  {s:"Elle s'est ___ compte de son erreur.",o:["rendu","rendue"],a:0,c:"A",w:"Dans « se rendre compte », le COD est « compte » (placé après) → rendu reste invariable."},
  {s:"Les deux rivales se sont ___ avant le match.",o:["souri","souries"],a:0,c:"A",w:"On sourit À quelqu'un : « se » est COI → souri, invariable."},
- {s:"Nezuko est ___ contente de revoir son frère.",o:["toute","tout"],a:0,c:"A",w:"Devant un adjectif féminin qui commence par une consonne, « tout » (= très) s'accorde : toute contente."},
+ {s:"La princesse est ___ contente de revoir son frère.",o:["toute","tout"],a:0,c:"A",w:"Devant un adjectif féminin qui commence par une consonne, « tout » (= très) s'accorde : toute contente."},
  {s:"Hermione est ___ étonnée par la note de Ron.",o:["tout","toute"],a:0,c:"A",w:"Devant un adjectif féminin qui commence par une voyelle, « tout » (= très) reste invariable : tout étonnée."},
  {s:"Les héros ont réparé le vaisseau eux-___.",o:["mêmes","même"],a:0,c:"A",w:"Après un pronom pluriel, « même » s'accorde : eux-mêmes."},
  {s:"Luffy collectionne des chemises ___.",o:["orange","oranges"],a:0,c:"A",w:"Orange est d'abord un nom de fruit : comme couleur, il reste invariable."},
@@ -621,7 +629,7 @@ const BANK={
  {s:"Cette carte vaut deux ___ cinquante points.",o:["cent","cents"],a:0,c:"A",w:"Suivi d'un autre nombre, cent ne prend pas de s : deux cent cinquante."},
  {s:"Il y avait quatre-___ supporters dans la salle.",o:["vingts","vingt"],a:0,c:"A",w:"Quatre-vingts prend un s quand il termine le nombre (mais : quatre-vingt-deux)."},
  {s:"Trois ___ sept cents ans plus tard, Senku se réveille.",o:["mille","milles"],a:0,c:"A",w:"Mille est toujours invariable."},
- {s:"___ tu fasses, Kakashi arrivera en retard.",o:["Quoi que","Quoique"],a:0,c:"H",w:"Quoi que (en deux mots) = quelle que soit la chose que. Quoique (en un mot) = bien que."},
+ {s:"___ tu fasses, mon frère arrivera en retard.",o:["Quoi que","Quoique"],a:0,c:"H",w:"Quoi que (en deux mots) = quelle que soit la chose que. Quoique (en un mot) = bien que."},
  {s:"___ fatigué, Tanjiro continue de se battre.",o:["Quoique","Quoi que"],a:0,c:"H",w:"Quoique (en un mot) = bien que."},
  {s:"___ soit le boss, Link le battra.",o:["Quel que","Quelque","Quelle que"],a:0,c:"H",w:"Devant le verbe être, on écrit « quel que » en deux mots, accordé avec le sujet : le boss → quel que."},
  {s:"___ soient les obstacles, Luffy avance.",o:["Quels que","Quelles que","Quelques"],a:0,c:"H",w:"« Quel que » s'accorde avec le sujet : les obstacles (masculin pluriel) → quels que."},
@@ -653,9 +661,9 @@ const BANK={
  {s:"Les chaleurs qu'il a ___ cet été étaient terribles.",o:["fait","faites"],a:0,c:"A",w:"Verbe impersonnel (il fait chaud) : participe toujours invariable."},
  {s:"Les heures que j'ai ___ m'ont fait du bien.",o:["dormi","dormies"],a:0,c:"A",w:"Dormir n'a pas de COD : « que » indique une durée → invariable."},
  {s:"___ la liste des joueurs sélectionnés.",o:["Ci-joint","Ci-jointe"],a:0,c:"A",w:"En tête de phrase, ci-joint reste invariable."},
- {s:"Les photos ___ montrent la victoire de Karasuno.",o:["ci-jointes","ci-joint"],a:0,c:"A",w:"Placé après le nom, ci-joint s'accorde comme un adjectif : les photos ci-jointes."},
+ {s:"Les photos ___ montrent la victoire de notre équipe.",o:["ci-jointes","ci-joint"],a:0,c:"A",w:"Placé après le nom, ci-joint s'accorde comme un adjectif : les photos ci-jointes."},
  {s:"Le match a duré deux heures et ___.",o:["demie","demi","demies"],a:0,c:"A",w:"Après le nom, demi s'accorde en genre (heure → demie), jamais en nombre."},
- {s:"Kakashi est en retard d'une ___-heure.",o:["demi","demie"],a:0,c:"A",w:"Devant le nom, avec un trait d'union, demi est invariable."},
+ {s:"Le bus est en retard d'une ___-heure.",o:["demi","demie"],a:0,c:"A",w:"Devant le nom, avec un trait d'union, demi est invariable."},
  {s:"Luffy court ___-pieds sur le pont du navire.",o:["nu","nus"],a:0,c:"A",w:"Devant le nom, avec un trait d'union : nu-pieds, invariable. Après le nom : pieds nus."},
  {s:"Les rois se sont ___ sur le trône pendant des siècles.",o:["succédé","succédés"],a:0,c:"A",w:"On succède À quelqu'un : « se » est COI → succédé, invariable."},
  {s:"Les deux héros se sont ___ dès leur première rencontre.",o:["plu","plus"],a:0,c:"A",w:"On plaît À quelqu'un : « se » est COI → plu, invariable."},
@@ -698,10 +706,10 @@ const BANK={
  {s:"Il s'en est ___ de peu que Luffy perde.",o:["fallu","fallue","fallut"],a:0,c:"A",w:"Falloir est impersonnel : son participe, fallu, est toujours invariable."},
  {s:"Hermione est ___ heureuse de sa note.",o:["tout","toute"],a:0,c:"A",w:"Devant un adjectif féminin commençant par une voyelle ou un h muet, tout reste invariable : tout heureuse."},
  {s:"Ron rougit, et Ginny est ___ honteuse.",o:["toute","tout"],a:0,c:"A",w:"Honteuse commence par un h aspiré (on dit « la honte ») : tout s'accorde comme devant une consonne → toute honteuse."},
- {s:"___ rusée qu'elle soit, Nami se fera prendre.",o:["Toute","Tout"],a:0,c:"A",w:"Tout (= si) s'accorde devant un adjectif féminin commençant par une consonne : toute rusée qu'elle soit."},
+ {s:"___ rusée qu'elle soit, la voleuse se fera prendre.",o:["Toute","Tout"],a:0,c:"A",w:"Tout (= si) s'accorde devant un adjectif féminin commençant par une consonne : toute rusée qu'elle soit."},
  {s:"La ___ princesse était en réalité une espionne.",o:["soi-disant","soi-disante","soit-disant"],a:0,c:"A",w:"Soi-disant est invariable (soi + disant : « qui se dit »)."},
- {s:"Nami se faufile, ___ une ombre.",o:["telle","tel"],a:0,c:"A",w:"Sans « que », tel s'accorde avec le nom qui suit : telle une ombre."},
- {s:"___ qu'aient été ses erreurs, Vegeta s'est racheté.",o:["Quelles","Quels","Quelques"],a:0,c:"A",w:"« Quel que » s'accorde avec le sujet : ses erreurs (féminin pluriel) → quelles qu'aient été."},
+ {s:"La voleuse se faufile, ___ une ombre.",o:["telle","tel"],a:0,c:"A",w:"Sans « que », tel s'accorde avec le nom qui suit : telle une ombre."},
+ {s:"___ qu'aient été ses erreurs, le méchant s'est racheté.",o:["Quelles","Quels","Quelques"],a:0,c:"A",w:"« Quel que » s'accorde avec le sujet : ses erreurs (féminin pluriel) → quelles qu'aient été."},
  {s:"Ils ont gagné aux ___ de leurs adversaires.",o:["dépens","dépends","dépents"],a:0,c:"H",w:"« Aux dépens de » = au détriment de, toujours en -ens."},
  {s:"Arrête de me ___ les oreilles avec Pokémon !",o:["rebattre","rabattre"],a:0,c:"H",w:"Rebattre les oreilles = répéter sans cesse. Rabattre = ramener, baisser."},
  {s:"C'est un sujet ___ : on en a parlé cent fois.",o:["rebattu","rabattu"],a:0,c:"H",w:"Un sujet rebattu = dont on a trop parlé."},
@@ -789,10 +797,10 @@ const MOTJUSTE_CM2=[
  {s:"Le volcan est entré en ___ cette nuit.",o:["éruption","irruption"],a:0,w:"Une éruption : le volcan crache sa lave. Faire irruption : entrer brusquement quelque part."},
  {s:"Un chat a fait ___ dans la classe pendant la dictée.",o:["irruption","éruption"],a:0,w:"Faire irruption : entrer brusquement, sans prévenir. Une éruption, c'est pour les volcans (ou les boutons !)."},
  {s:"Conan est très ___ : il remarque le moindre détail.",o:["perspicace","persévérant"],a:0,w:"Perspicace : qui voit et comprend ce que les autres ne remarquent pas. Persévérant : qui continue malgré les difficultés."},
- {s:"Rock Lee s'entraîne sans jamais abandonner : il est ___.",o:["persévérant","perspicace"],a:0,w:"Persévérant : qui n'abandonne jamais. Perspicace : qui comprend vite et voit les détails."},
- {s:"Inosuke fonce sur des démons géants sans réfléchir : il est ___.",o:["téméraire","temporaire","tempéré"],a:0,w:"Téméraire : courageux jusqu'à l'imprudence. Temporaire : qui ne dure pas. Tempéré : modéré, comme un climat tempéré."},
+ {s:"Ce sportif s'entraîne sans jamais abandonner : il est ___.",o:["persévérant","perspicace"],a:0,w:"Persévérant : qui n'abandonne jamais. Perspicace : qui comprend vite et voit les détails."},
+ {s:"Le chevalier fonce sur des dragons géants sans réfléchir : il est ___.",o:["téméraire","temporaire","tempéré"],a:0,w:"Téméraire : courageux jusqu'à l'imprudence. Temporaire : qui ne dure pas. Tempéré : modéré, comme un climat tempéré."},
  {s:"Naruto a un appétit ___ : il n'est jamais rassasié.",o:["insatiable","insalubre","instable"],a:0,w:"Insatiable : qu'on ne peut jamais satisfaire. Insalubre : sale, mauvais pour la santé. Instable : qui risque de tomber."},
- {s:"Kakashi reste ___, même quand tout explose autour de lui.",o:["impassible","impossible","impensable"],a:0,w:"Impassible : qui ne montre aucune émotion. Impossible : qui ne peut pas arriver. Impensable : qu'on ne peut même pas imaginer."},
+ {s:"Le capitaine reste ___, même quand tout explose autour de lui.",o:["impassible","impossible","impensable"],a:0,w:"Impassible : qui ne montre aucune émotion. Impossible : qui ne peut pas arriver. Impensable : qu'on ne peut même pas imaginer."},
  {s:"Pour l'aider au combat, le magicien ___ un dragon de feu.",o:["invoque","évoque"],a:0,w:"Invoquer : appeler à l'aide une créature, un esprit. Évoquer : parler de quelque chose, y faire penser."},
  {s:"Grand-père ___ souvent ses vacances au Japon.",o:["évoque","invoque"],a:0,w:"Évoquer : parler de, rappeler un souvenir. Invoquer : appeler à l'aide un esprit ou une créature."},
  {s:"Le roi, ___, pardonne au voleur.",o:["magnanime","unanime"],a:0,w:"Magnanime : généreux, qui pardonne. Unanime : quand tout le monde est du même avis (il faut être plusieurs !)."},
@@ -820,7 +828,7 @@ const MOTJUSTE_CM2=[
  {s:"Les élèves ont été ___ pour leur exposé.",o:["félicités","facilités"],a:0,w:"Féliciter : dire bravo. Faciliter : rendre plus facile."},
  {s:"Ce boss est ___ : même les meilleurs joueurs le craignent.",o:["redoutable","redondant","réductible"],a:0,w:"Redoutable : qu'on craint, très dangereux. Redondant : qui se répète inutilement. Réductible : qu'on peut réduire."},
  {s:"Un arc-en-ciel est ___ : il disparaît en quelques minutes.",o:["éphémère","élémentaire","épidémique"],a:0,w:"Éphémère : qui dure très peu de temps. Élémentaire : simple, de base. Épidémique : qui se propage comme une maladie."},
- {s:"Ran fait un travail ___ : elle vérifie chaque détail.",o:["minutieux","minuscule","minuté"],a:0,w:"Minutieux : fait avec beaucoup de soin. Minuscule : tout petit. Minuté : chronométré."},
+ {s:"Ma sœur fait un travail ___ : elle vérifie chaque détail.",o:["minutieux","minuscule","minuté"],a:0,w:"Minutieux : fait avec beaucoup de soin. Minuscule : tout petit. Minuté : chronométré."},
  {s:"La tour monte à une hauteur ___ : on a le vertige rien qu'à la regarder.",o:["vertigineuse","vertueuse","verdoyante"],a:0,w:"Vertigineuse : qui donne le vertige. Vertueuse : honnête, pleine de qualités. Verdoyante : bien verte, comme une prairie."},
  {s:"Ce Pokémon a l'air terrible, mais il est ___ : il ne ferait pas de mal à une mouche.",o:["inoffensif","offensif","offensé"],a:0,w:"Inoffensif : qui ne fait pas de mal. Offensif : qui attaque. Offensé : vexé."}
 ];
@@ -862,7 +870,7 @@ const MOTJUSTE_COL=[
 /* Mots invariables à retenir : tapés sous la dictée, avec une phrase pour le contexte */
 const MOTS_CM2=[
  {w:"beaucoup",s:"Il y a beaucoup de monde au stade."},{w:"toujours",s:"Pikachu dort toujours après un combat."},
- {w:"jamais",s:"Zenitsu ne combat jamais les yeux ouverts."},{w:"pendant",s:"Link a dormi pendant cent ans."},
+ {w:"jamais",s:"Mon chat ne mange jamais de salade."},{w:"pendant",s:"Link a dormi pendant cent ans."},
  {w:"depuis",s:"Senku attend depuis trois mille ans."},{w:"parmi",s:"Conan se cache parmi les élèves."},
  {w:"malgré",s:"Malgré la pluie, le match continue."},{w:"bientôt",s:"Les vacances arrivent bientôt."},
  {w:"longtemps",s:"Il y a longtemps que je n'ai pas perdu."},{w:"dehors",s:"Mon chien dort dehors quand il fait beau."},
@@ -875,7 +883,7 @@ const MOTS_CM2=[
  {w:"pourtant",s:"Il est petit, pourtant il saute très haut."},{w:"près",s:"Le gymnase est tout près de chez moi."},
  {w:"hier",s:"Hier, j'ai battu mon record."},{w:"partout",s:"Il y a des Pokémon partout dans la forêt."},
  {w:"peut-être",s:"Il va peut-être pleuvoir pendant le match."},{w:"aujourd'hui",s:"Aujourd'hui, on joue la finale."},
- {w:"maintenant",s:"Range ta chambre maintenant, s'il te plaît."},{w:"souvent",s:"Kakashi arrive souvent en retard."},
+ {w:"maintenant",s:"Range ta chambre maintenant, s'il te plaît."},{w:"souvent",s:"Le bus arrive souvent en retard."},
  {w:"tellement",s:"Ce boss est tellement fort !"},{w:"plusieurs",s:"J'ai plusieurs cartes en double."},
  {w:"d'abord",s:"D'abord, on s'échauffe."},{w:"ailleurs",s:"Le trésor est caché ailleurs."},
  {w:"autour",s:"Les supporters courent autour du terrain."},{w:"derrière",s:"Le ninja se cache derrière un arbre."},
@@ -892,20 +900,20 @@ const MOTS_CM2=[
 ];
 /* Grande relecture : {faux|juste} marque chaque faute, w donne l'explication de chacune, dans l'ordre */
 const RELECTURE_CM2=[
- {x:"Zenitsu s'est {endormie|endormi} pendant le combat. Pourtant, il {à|a} battu le démon en dormant. Ses amis {son|sont} restés bouche bée.",w:["Qui s'est endormi ? Zenitsu, un garçon : pas de e.","« il avait battu » marche, donc « a ».","« ses amis étaient restés » marche, donc « sont »."]},
+ {x:"Le chevalier s'est {endormie|endormi} pendant le combat. Pourtant, il {à|a} battu le dragon en dormant. Ses amis {son|sont} restés bouche bée.",w:["Qui s'est endormi ? Le chevalier, masculin : pas de e.","« il avait battu » marche, donc « a ».","« ses amis étaient restés » marche, donc « sont »."]},
  {x:"Sacha veut {attrapé|attraper} un Pokémon rare. Il lance trois Poké Balls, mais elles {rate|ratent} toutes. Pikachu le regarde et {rigoles|rigole}.",w:["« veut mordre », donc « er ».","Qui rate ? Elles, les Poké Balls : « elles ratent ».","Qui rigole ? Pikachu, tout seul : « il rigole », sans s."]},
  {x:"Samedi, les filles de mon club ont {jouer|joué} contre le club voisin. Elles se sont bien {battu|battues}. Chaque {points|point} était une petite victoire.",w:["« ont mordu », donc « é ».","Avec être, on accorde avec le sujet : elles (les filles), donc « battues ».","Chaque = un seul : « chaque point », au singulier."]},
  {x:"Conan a {trouver|trouvé} un indice sous le tapis. La police {et|est} arrivée trop tard, comme d'habitude. Les policiers {cherche|cherchent} encore le coupable.",w:["« a mordu », donc « é ».","« la police était arrivée » marche, donc « est ».","Qui cherche ? Les policiers : « ils cherchent »."]},
  {x:"Naruto mange un bol de ramen trois fois par {jours|jour}. Le vendeur le connaît bien et lui {donnes|donne} toujours un œuf en plus. Naruto {et|est} son meilleur client !",w:["« Par jour » = chaque jour : singulier.","Qui donne ? Le vendeur : « il donne », sans s.","« Naruto était son meilleur client » marche, donc « est »."]},
- {x:"Tanjiro porte sa sœur dans une boîte en bois. Le jour, Nezuko {dorment|dort}. La nuit, elle se {réveil|réveille}. Les démons qui la croisent {son|sont} très surpris.",w:["Qui dort ? Nezuko, toute seule : « elle dort ».","C'est le verbe se réveiller : « elle se réveille ». Le réveil, sans e, c'est l'objet qui sonne.","« les démons étaient très surpris » marche, donc « sont »."]},
+ {x:"Tanjiro porte sa sœur dans une boîte en bois. Le jour, elle {dorment|dort}. La nuit, elle se {réveil|réveille}. Les démons qui la croisent {son|sont} très surpris.",w:["Qui dort ? Elle, sa sœur, toute seule : « elle dort ».","C'est le verbe se réveiller : « elle se réveille ». Le réveil, sans e, c'est l'objet qui sonne.","« les démons étaient très surpris » marche, donc « sont »."]},
  {x:"Senku s'est réveillé après trois mille ans. Il a {décider|décidé} de tout reconstruire. Avec ses amis, il {fabriques|fabrique} du savon, puis des {ampoule|ampoules}.",w:["« a mordu », donc « é ».","Qui fabrique ? Il (Senku) : « il fabrique », sans s. Ses amis l'aident, mais le sujet, c'est « il ».","« Des » annonce un pluriel : des ampoules."]},
  {x:"Le gardien {à|a} plongé du bon côté. Il a {arrêter|arrêté} le penalty du bout des doigts. Les supporters {crie|crient} son nom dans tout le stade.",w:["« avait plongé » marche, donc « a ».","« a mordu », donc « é ».","Qui crie ? Les supporters : « ils crient »."]},
  {x:"Link explore le royaume d'Hyrule. Il {cherches|cherche} la princesse Zelda, qui {et|est} prisonnière depuis cent ans. Il doit d'abord {trouvé|trouver} les quatre créatures divines.",w:["Qui cherche ? Link, tout seul : « il cherche », sans s.","« qui était prisonnière » marche, donc « est ».","« doit mordre », donc « er »."]},
  {x:"Mes copains {joue|jouent} à Brawl Stars après l'école. Moi, je préfère le foot. Hier, on {à|a} fait un match incroyable. Nous avons {gagner|gagné} cinq à quatre !",w:["Qui joue ? Mes copains : « ils jouent ».","« on avait fait » marche, donc « a ».","« avons mordu », donc « é »."]},
  {x:"Papa a {couper|coupé} la pizza en huit parts. Mon frère et ma sœur se {jette|jettent} dessus comme des Ronflex {affamé|affamés}. Il ne reste plus rien pour Papa !",w:["« a mordu », donc « é ».","Mon frère et ma sœur, c'est « ils » : « ils se jettent ».","Qui est affamé ? Des Ronflex, plusieurs : « affamés »."]},
  {x:"Mes cartes Pokémon sont {rangé|rangées} dans un classeur. J'en ai plus de deux {cent|cents}. La plus rare {brilles|brille} quand on la penche.",w:["Qui est rangé ? Mes cartes : féminin pluriel, « rangées ».","Deux fois cent, et rien après : « deux cents », avec un s.","Qui brille ? La plus rare, une seule carte : « elle brille »."]},
- {x:"Inosuke porte une tête de sanglier. Il {fonces|fonce} sur tous les démons sans réfléchir. Quand il {à|a} faim, il {mangent|mange} n'importe quoi.",w:["Qui fonce ? Inosuke : « il fonce », sans s.","« quand il avait faim » marche, donc « a ».","Qui mange ? Il (Inosuke), tout seul : « il mange »."]},
- {x:"Hinata est petit, mais il saute très haut. Ses attaques {surprenne|surprennent} toujours les adversaires. Kageyama lui fait des passes {parfaite|parfaites}, et Karasuno a {gagner|gagné} le match.",w:["Qui surprend ? Ses attaques : « elles surprennent ».","Des passes, au pluriel : « parfaites ».","« a mordu », donc « é »."]},
+ {x:"Le ninja porte un masque de sanglier. Il {fonces|fonce} sur tous les démons sans réfléchir. Quand il {à|a} faim, il {mangent|mange} n'importe quoi.",w:["Qui fonce ? Il (le ninja) : « il fonce », sans s.","« quand il avait faim » marche, donc « a ».","Qui mange ? Il (le ninja), tout seul : « il mange »."]},
+ {x:"Le petit attaquant saute très haut. Ses attaques {surprenne|surprennent} toujours les adversaires. Le passeur lui fait des passes {parfaite|parfaites}, et l'équipe a {gagner|gagné} le match.",w:["Qui surprend ? Ses attaques : « elles surprennent ».","Des passes, au pluriel : « parfaites ».","« a mordu », donc « é »."]},
  {x:"Harry {à|a} reçu une lettre de Poudlard. Mais son oncle la {déchires|déchire} avant de la lire. Le lendemain, des centaines de lettres {arrive|arrivent} par la cheminée !",w:["« Harry avait reçu » marche, donc « a ».","Qui déchire ? Son oncle : « il déchire », sans s.","Qui arrive ? Des centaines de lettres : « elles arrivent »."]},
  {x:"Mario doit {sauvé|sauver} la princesse Peach. Elle est {enfermé|enfermée} dans le château de Bowser. Mario {cours|court} sans jamais s'arrêter.",w:["« doit mordre », donc « er ».","« est mordue », donc « é ». Qui est enfermé ? La princesse : « enfermée ».","Qui court ? Mario : « il court », avec un t."]},
  {x:"Luffy et son équipage {navigue|naviguent} vers une île mystérieuse. Ils y {on|ont} trouvé un trésor. Mais Luffy {préfères|préfère} la viande à l'or !",w:["Luffy et son équipage, c'est « ils » : « ils naviguent ».","« ils y avaient trouvé » marche, donc « ont ».","Qui préfère ? Luffy : « il préfère », sans s."]},
@@ -913,31 +921,512 @@ const RELECTURE_CM2=[
  {x:"Le chien des voisins {aboient|aboie} toute la nuit. Le matin, mes parents {son|sont} épuisés.",w:["Qui aboie ? Le chien, un seul. « des voisins » est juste à côté pour te piéger.","« mes parents étaient épuisés » marche, donc « sont »."]},
  {x:"Dans Brawl Stars, chaque {brawlers|brawler} a son super. Les meilleurs joueurs {gagne|gagnent} des trophées. Mon cousin en a {gagner|gagné} deux mille. Il {et|est} trop fort !",w:["Chaque = un seul : « chaque brawler ».","Qui gagne ? Les meilleurs joueurs : « ils gagnent ».","« a mordu », donc « é ».","« il était trop fort » marche, donc « est »."]}
 ].map(r=>({...r,t:"text"}));
-const SLEEPERS=["Zenitsu","Kogoro","Ronflex"];
+const SLEEPERS=["Le chevalier peureux","Mon grand-père","Ronflex"];
+/* =====================================================================
+   CE2 : pluriel des noms, accord simple dans le groupe du nom et avec le sujet,
+   a/à, et/est, on/ont, son/sont, ou/où, -er ou -é (sans accord)
+   ===================================================================== */
+const CHASSE_CE2 = [
+ ["Les {zombie|zombies} sortent la nuit dans Minecraft.", "« Les » annonce plusieurs zombies : on ajoute un s."],
+ ["Le creeper {explosent|explose} devant ma maison.", "Qui explose ? Le creeper, un seul : « il explose », sans -nt."],
+ ["Les villageois {vend|vendent} des pommes contre des émeraudes.", "Qui vend ? Les villageois, ils sont plusieurs : « ils vendent »."],
+ ["Mon frère {à|a} construit une tour en diamant.", "Remplace par « avait » : mon frère avait construit. Donc « a », sans accent."],
+ ["Je vais {a|à} la piscine le mercredi.", "« Je vais avait la piscine » ne veut rien dire : c'est « à », avec un accent."],
+ ["Mario {est|et} Luigi font la course.", "On peut dire « Mario et puis Luigi » : c'est « et »."],
+ ["Le kart rouge {et|est} le plus rapide.", "Remplace par « était » : le kart rouge était le plus rapide. Donc « est »."],
+ ["Les dresseurs {on|ont} attrapé trois Pokémon.", "Remplace par « avaient » : les dresseurs avaient attrapé. Donc « ont »."],
+ ["{Ont|On} joue au foot dans la cour.", "Remplace par « il » : il joue au foot. Donc « On »."],
+ ["Les sorciers {son|sont} dans la grande salle.", "Remplace par « étaient » : les sorciers étaient dans la grande salle. Donc « sont »."],
+ ["Obélix mange {sont|son} sanglier rôti.", "Remplace par « mon » : il mange mon sanglier. Donc « son »."],
+ ["Les petits Schtroumpfs sont {bleu|bleus}.", "Qui est bleu ? Les Schtroumpfs, ils sont plusieurs : « bleus »."],
+ ["Ma sœur a une baguette {magiques|magique}.", "Une baguette, une seule : « magique », sans s."],
+ ["Les dragons {noir|noirs} volent au-dessus du château.", "« Les dragons » : ils sont plusieurs, donc « noirs », avec un s."],
+ ["La reine porte une robe {vert|verte}.", "Une robe, c'est féminin : « verte », avec un e."],
+ ["Les chevaux galopent dans la prairie.", "Zéro faute ! Un cheval, des chevaux : avec un x."],
+ ["J'ai trouvé deux {bijous|bijoux} dans le coffre.", "Un bijou, des bijoux : avec un x, comme caillou, chou, genou, hibou, joujou et pou."],
+ ["Les {gâteau|gâteaux} sont sur la table.", "Un gâteau, des gâteaux : les mots en -eau prennent un x au pluriel."],
+ ["Il faut {mangé|manger} avant le match.", "« Il faut mordre » marche (pas « il faut mordu ») : on met « er »."],
+ ["Sonic a {ramasser|ramassé} cent anneaux.", "« Sonic a mordu » marche (pas « a mordre ») : on met « é »."],
+ ["Nous {joue|jouons} aux Lego tout l'après-midi.", "Avec « nous », le verbe finit par « -ons » : nous jouons."],
+ ["Tu {construit|construis} un robot en briques.", "Avec « tu », le verbe finit par un s : tu construis."],
+ ["Les enfants {regarde|regardent} le match.", "Qui regarde ? Les enfants, ils sont plusieurs : « ils regardent »."],
+ ["Le chat dort sur le canapé.", "Zéro faute ! Qui dort ? Le chat, un seul : « il dort »."],
+ ["Demain, nous {iront|irons} au parc.", "Avec « nous », c'est « -ons » : nous irons. « -ont », c'est pour « ils »."],
+ ["Les pirates {cherche|cherchent} le trésor.", "Qui cherche ? Les pirates : « ils cherchent »."],
+ ["Le pirate a un perroquet très {bavards|bavard}.", "Un perroquet, un seul : « bavard », sans s."],
+ ["Chaque {matins|matin}, je bois du chocolat.", "« Chaque » veut dire « un par un » : toujours au singulier."],
+ ["Les filles de l'équipe sont {contents|contentes}.", "Qui est content ? Les filles : c'est féminin et pluriel, « contentes »."],
+ ["Le dinosaure {à|a} de grandes dents.", "Remplace par « avait » : le dinosaure avait de grandes dents. Donc « a »."],
+ ["Mon ami {est|et} moi, nous jouons à Mario Kart.", "On peut dire « mon ami et puis moi » : c'est « et »."],
+ ["Où {et|est} ma pioche en diamant ?", "Remplace par « était » : où était ma pioche ? Donc « est »."],
+ ["Les robots {marche|marchent} tout seuls.", "Qui marche ? Les robots : « ils marchent »."],
+ ["Hier, Papa a {préparer|préparé} des crêpes.", "« Papa a mordu » marche : on met « é »."],
+ ["Ce soir, on va {regardé|regarder} un film.", "« On va mordre » marche : on met « er »."],
+ ["Les abeilles {fabrique|fabriquent} du miel.", "Qui fabrique ? Les abeilles : « elles fabriquent »."],
+ ["Les feuilles {jaune|jaunes} tombent des arbres.", "« Les feuilles » : elles sont plusieurs, donc « jaunes », avec un s."],
+ ["Nous avons planté des carottes dans le jardin.", "Zéro faute ! « des carottes » : plusieurs, avec un s."],
+ ["Le chevalier monte sur {sont|son} cheval.", "Remplace par « mon » : il monte sur mon cheval. Donc « son »."],
+ ["Les chanteuses {chante|chantent} pour chasser les démons.", "Qui chante ? Les chanteuses : « elles chantent »."],
+ ["Les Pokémon dorment après le combat.", "Zéro faute ! « Pokémon » ne prend jamais de s : un Pokémon, des Pokémon."]
+];
+const MORDRE_CE2 = [
+ {s:"Le joueur va ___ le ballon.", o:["lancer","lancé"], a:0, w:"« va mordre » marche, donc « er »."},
+ {s:"Le joueur a ___ le ballon.", o:["lancer","lancé"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Il faut ___ les devoirs avant de jouer.", o:["terminer","terminé"], a:0, w:"« il faut mordre » marche, donc « er »."},
+ {s:"Steve a ___ des diamants dans la mine.", o:["trouver","trouvé"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Je veux ___ un dragon.", o:["dessiner","dessiné"], a:0, w:"« je veux mordre » marche, donc « er »."},
+ {s:"Maman a ___ la porte.", o:["fermer","fermé"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"On va ___ au loup.", o:["jouer","joué"], a:0, w:"« on va mordre » marche, donc « er »."},
+ {s:"Nous avons ___ au loup.", o:["jouer","joué"], a:1, w:"« nous avons mordu » marche, donc « é »."},
+ {s:"Tu dois ___ ta chambre.", o:["ranger","rangé"], a:0, w:"« tu dois mordre » marche, donc « er »."},
+ {s:"Tu as ___ ta chambre ?", o:["ranger","rangé"], a:1, w:"« tu as mordu » marche, donc « é »."},
+ {s:"Le chat a ___ tout le lait.", o:["renverser","renversé"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Il ne faut pas ___ ton goûter.", o:["oublier","oublié"], a:0, w:"« il ne faut pas mordre » marche, donc « er »."},
+ {s:"Mario a ___ par-dessus la tortue.", o:["sauter","sauté"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Pikachu va ___ un éclair.", o:["lancer","lancé"], a:0, w:"« va mordre » marche, donc « er »."},
+ {s:"Le dresseur a ___ un Pokémon rare.", o:["capturer","capturé"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Je vais ___ une potion.", o:["préparer","préparé"], a:0, w:"« je vais mordre » marche, donc « er »."},
+ {s:"Les enfants ont ___ un bonhomme de neige.", o:["fabriquer","fabriqué"], a:1, w:"« ont mordu » marche, donc « é »."},
+ {s:"Ils peuvent ___ dans la piscine.", o:["nager","nagé"], a:0, w:"« ils peuvent mordre » marche, donc « er »."},
+ {s:"Le gardien a ___ le penalty.", o:["arrêter","arrêté"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Elle va ___ son vélo.", o:["réparer","réparé"], a:0, w:"« elle va mordre » marche, donc « er »."},
+ {s:"Elle a ___ son vélo.", o:["réparer","réparé"], a:1, w:"« elle a mordu » marche, donc « é »."},
+ {s:"On peut ___ avec des briques.", o:["jouer","joué"], a:0, w:"« on peut mordre » marche, donc « er »."},
+ {s:"Le robot a ___ trois fois sur lui-même.", o:["tourner","tourné"], a:1, w:"« a mordu » marche, donc « é »."},
+ {s:"Pour ___ le trésor, il faut une carte.", o:["trouver","trouvé"], a:0, w:"« pour mordre » marche, donc « er ». Après « pour », toujours « er »."}
+];
+const JUMEAUX_CE2 = [
+ {s:"Luigi ___ un kart vert.", o:["a","à"], a:0, w:"« Luigi avait un kart vert » marche, donc « a »."},
+ {s:"Je vais ___ l'école à pied.", o:["a","à"], a:1, w:"« Je vais avait l'école » ne veut rien dire, donc « à »."},
+ {s:"Mon chien ___ peur de l'orage.", o:["a","à"], a:0, w:"« Mon chien avait peur » marche, donc « a »."},
+ {s:"Il joue ___ la balle avec son chien.", o:["a","à"], a:1, w:"« Il joue avait la balle » ne veut rien dire, donc « à »."},
+ {s:"Le zombie ___ perdu son chapeau.", o:["a","à"], a:0, w:"« Le zombie avait perdu » marche, donc « a »."},
+ {s:"On mange ___ midi.", o:["a","à"], a:1, w:"« On mange avait midi » ne veut rien dire, donc « à »."},
+ {s:"Le ciel ___ tout bleu.", o:["et","est"], a:1, w:"« Le ciel était tout bleu » marche, donc « est »."},
+ {s:"J'ai un chat ___ un lapin.", o:["et","est"], a:0, w:"« un chat et puis un lapin » marche, donc « et »."},
+ {s:"Le creeper ___ vert.", o:["et","est"], a:1, w:"« Le creeper était vert » marche, donc « est »."},
+ {s:"Astérix ___ Obélix partent à l'aventure.", o:["et","est"], a:0, w:"« Astérix et puis Obélix » marche, donc « et »."},
+ {s:"La potion ___ magique.", o:["et","est"], a:1, w:"« La potion était magique » marche, donc « est »."},
+ {s:"Il pleut ___ il fait froid.", o:["et","est"], a:0, w:"« Il pleut et puis il fait froid » marche, donc « et »."},
+ {s:"Les dragons ___ des ailes immenses.", o:["on","ont"], a:1, w:"« Les dragons avaient des ailes » marche, donc « ont »."},
+ {s:"___ va au cinéma ce soir.", o:["On","Ont"], a:0, w:"« Il va au cinéma » marche, donc « On »."},
+ {s:"Mes amis ___ gagné la course.", o:["on","ont"], a:1, w:"« Mes amis avaient gagné » marche, donc « ont »."},
+ {s:"Le soir, ___ lit une histoire.", o:["on","ont"], a:0, w:"« Le soir, il lit une histoire » marche, donc « on »."},
+ {s:"Les Schtroumpfs ___ un bonnet blanc.", o:["on","ont"], a:1, w:"« Les Schtroumpfs avaient un bonnet » marche, donc « ont »."},
+ {s:"Quand ___ a faim, on mange.", o:["on","ont"], a:0, w:"« Quand il a faim » marche, donc « on »."},
+ {s:"Les cartes ___ dans le classeur.", o:["son","sont"], a:1, w:"« Les cartes étaient dans le classeur » marche, donc « sont »."},
+ {s:"Le chevalier lève ___ épée.", o:["son","sont"], a:0, w:"« Il lève mon épée » marche, donc « son »."},
+ {s:"Mes cousins ___ en vacances.", o:["son","sont"], a:1, w:"« Mes cousins étaient en vacances » marche, donc « sont »."},
+ {s:"Le pirate cache ___ trésor.", o:["son","sont"], a:0, w:"« Il cache mon trésor » marche, donc « son »."},
+ {s:"Les karts ___ prêts pour la course.", o:["son","sont"], a:1, w:"« Les karts étaient prêts » marche, donc « sont »."},
+ {s:"Pikachu dort sur ___ coussin.", o:["son","sont"], a:0, w:"« Il dort sur mon coussin » marche, donc « son »."},
+ {s:"Tu veux une pomme ___ une banane ?", o:["ou","où"], a:0, w:"« ou bien une banane » marche, donc « ou », sans accent."},
+ {s:"___ est mon ballon ?", o:["Ou","Où"], a:1, w:"On demande l'endroit, le lieu : « où », avec un accent."},
+ {s:"La maison ___ j'habite est jaune.", o:["ou","où"], a:1, w:"C'est un lieu (la maison), donc « où »."}
+];
+const ACCORDS_CE2 = [
+ {s:"Les ___ courent dans le pré.", o:["lapin","lapins"], a:1, w:"« Les » : plusieurs lapins, donc un s."},
+ {s:"J'ai deux ___ dans ma trousse.", o:["crayon","crayons"], a:1, w:"Deux crayons : plusieurs, donc un s."},
+ {s:"Les ___ du château sont très hauts.", o:["mur","murs"], a:1, w:"« Les » : plusieurs murs, donc un s."},
+ {s:"Il y a trois ___ dans le ciel.", o:["oiseau","oiseaux"], a:1, w:"Un oiseau, des oiseaux : les mots en -eau prennent un x."},
+ {s:"Les ___ galopent dans le pré.", o:["cheval","chevaux"], a:1, w:"Un cheval, des chevaux : -al devient -aux."},
+ {s:"Une grande tour ___ apparaît.", o:["noir","noire"], a:1, w:"Une tour, c'est féminin : « noire »."},
+ {s:"Les pommes sont ___.", o:["rouge","rouges"], a:1, w:"Qui est rouge ? Les pommes, plusieurs : « rouges »."},
+ {s:"Le loup est ___.", o:["méchant","méchante"], a:0, w:"Le loup : masculin singulier, donc « méchant »."},
+ {s:"La sorcière est très ___.", o:["gentil","gentille"], a:1, w:"La sorcière : féminin, donc « gentille »."},
+ {s:"Ma sœur a un ___ chat.", o:["petit","petite"], a:0, w:"Qui est petit ? Le chat : masculin, donc « petit »."},
+ {s:"Les enfants ___ dans la cour.", o:["joue","jouent"], a:1, w:"Qui joue ? Les enfants : « ils jouent »."},
+ {s:"Le chien ___ après le ballon.", o:["court","courent"], a:0, w:"Qui court ? Le chien, un seul : « il court »."},
+ {s:"Nous ___ des cabanes.", o:["construisons","construisent"], a:0, w:"Avec « nous », c'est « -ons » : nous construisons."},
+ {s:"Vous ___ très bien.", o:["chantez","chantent"], a:0, w:"Avec « vous », c'est « -ez » : vous chantez."},
+ {s:"Les zombies ___ la nuit.", o:["sort","sortent"], a:1, w:"Qui sort ? Les zombies : « ils sortent »."},
+ {s:"Tu ___ un gâteau.", o:["prépares","prépare"], a:0, w:"Avec « tu », le verbe prend un s : tu prépares."},
+ {s:"Les feuilles ___ à l'automne.", o:["tombe","tombent"], a:1, w:"Qui tombe ? Les feuilles : « elles tombent »."},
+ {s:"Le kart de Mario ___ très vite.", o:["roule","roulent"], a:0, w:"Qui roule ? Le kart, un seul : « il roule »."},
+ {s:"Ils ___ en vacances demain.", o:["partent","part"], a:0, w:"Avec « ils », c'est « -ent » : ils partent."},
+ {s:"J'ai mangé trois ___.", o:["gâteau","gâteaux"], a:1, w:"Un gâteau, des gâteaux : avec un x."},
+ {s:"Les ___ du roi sont en or.", o:["bijou","bijoux"], a:1, w:"Un bijou, des bijoux : avec un x."},
+ {s:"Les chanteuses sont ___.", o:["prête","prêtes","prêts"], a:1, w:"Les chanteuses : féminin pluriel, donc « prêtes »."},
+ {s:"Le ___ dragon crache du feu.", o:["gros","grosse"], a:0, w:"Le dragon : masculin, donc « gros »."},
+ {s:"Les poules ___ des œufs.", o:["pond","pondent"], a:1, w:"Qui pond ? Les poules : « elles pondent »."}
+];
+const NOMBRES_CE2 = [
+ {s:"Il y a deux ___ élèves dans l'école.", o:["cents","cent"], a:0, w:"Deux fois cent, et rien après : « deux cents », avec un s."},
+ {s:"Le boss a deux ___ dix points de vie.", o:["cent","cents"], a:0, w:"Un autre nombre suit cent (dix) : pas de s. Deux cent dix."},
+ {s:"Mon arrière-grand-père a quatre-___ ans.", o:["vingts","vingt"], a:0, w:"Quatre fois vingt, et rien après : « quatre-vingts », avec un s."},
+ {s:"J'ai quatre-___-trois cartes.", o:["vingt","vingts"], a:0, w:"Un autre nombre suit vingt (trois) : pas de s. Quatre-vingt-trois."},
+ {s:"Ce château a deux ___ ans.", o:["mille","milles"], a:0, w:"Mille ne prend jamais de s."},
+ {s:"Le nombre 25 s'écrit avec deux ___.", o:["chiffres","nombres"], a:0, w:"2 et 5 sont des chiffres. Avec des chiffres, on écrit des nombres, comme des mots avec des lettres."},
+ {s:"Les trois ___ de la course ont une médaille.", o:["premiers","premier"], a:0, w:"Ils sont trois : « les trois premiers », avec un s."}
+];
+const MOTJUSTE_CE2 = [
+ {s:"Je bois un ___ d'eau.", o:["verre","vert","ver"], a:0, w:"Un verre : pour boire. Vert : la couleur. Un ver : la petite bête qui vit dans la terre."},
+ {s:"Un ___ de terre se cache sous la feuille.", o:["ver","verre","vert"], a:0, w:"Un ver : la petite bête. Un verre : pour boire. Vert : la couleur."},
+ {s:"En été, on se baigne dans la ___.", o:["mer","mère","maire"], a:0, w:"La mer : l'eau salée. La mère : la maman. Le maire : il dirige la ville."},
+ {s:"Le ___ a inauguré la nouvelle école.", o:["maire","mer","mère"], a:0, w:"Le maire : il dirige la ville. La mer : l'eau salée. La mère : la maman."},
+ {s:"Le boulanger fait du ___.", o:["pain","pin"], a:0, w:"Le pain : on le mange. Le pin : un arbre."},
+ {s:"Un écureuil grimpe dans le ___.", o:["pin","pain"], a:0, w:"Le pin : un arbre. Le pain : on le mange."},
+ {s:"Le ___ chante au lever du soleil.", o:["coq","coque"], a:0, w:"Le coq : l'oiseau de la ferme. La coque : la carapace d'un bateau ou d'un œuf."},
+ {s:"La girafe a un très long ___.", o:["cou","coup","coût"], a:0, w:"Le cou : entre la tête et les épaules. Un coup : quand on frappe. Le coût : le prix."},
+ {s:"Le gardien a donné un ___ de pied dans le ballon.", o:["coup","cou","coût"], a:0, w:"Un coup : quand on frappe. Le cou : entre la tête et les épaules. Le coût : le prix."},
+ {s:"Le loup a de grandes ___.", o:["dents","dans"], a:0, w:"Les dents : dans la bouche. « Dans » : à l'intérieur de quelque chose."},
+ {s:"Le chat dort ___ son panier.", o:["dans","dents"], a:0, w:"« Dans » : à l'intérieur de quelque chose. Les dents : dans la bouche."},
+ {s:"Mon grand-père a une ___ blanche.", o:["barbe","barque"], a:0, w:"La barbe : les poils du menton. Une barque : un petit bateau."}
+];
+const MOTS_CE2 = [
+ {w:"avec",s:"Je joue avec mon chien."},{w:"dans",s:"Le chat dort dans son panier."},
+ {w:"toujours",s:"Mon frère gagne toujours à Mario Kart."},{w:"aujourd'hui",s:"Aujourd'hui, il fait beau."},
+ {w:"beaucoup",s:"J'ai beaucoup de cartes."},{w:"puis",s:"Je mange, puis je joue."},
+ {w:"aussi",s:"Moi aussi, je veux un dragon !"},{w:"maintenant",s:"On part maintenant."},
+ {w:"souvent",s:"Il pleut souvent en automne."},{w:"très",s:"Ce creeper est très méchant."},
+ {w:"mais",s:"Il est petit, mais il court vite."},{w:"alors",s:"Il pleut, alors on joue dedans."},
+ {w:"après",s:"On joue après le goûter."},{w:"avant",s:"Je me lave les mains avant de manger."},
+ {w:"bien",s:"Tu as bien joué !"},{w:"chez",s:"Je vais chez ma mamie."},
+ {w:"hier",s:"Hier, j'ai vu un hérisson."},{w:"demain",s:"Demain, c'est mercredi."},
+ {w:"ici",s:"Viens ici, mon petit chat."},{w:"jamais",s:"Je ne mange jamais d'épinards."},
+ {w:"encore",s:"Le zombie revient encore !"},{w:"déjà",s:"Il a déjà fini ses devoirs."},
+ {w:"devant",s:"Le chien attend devant la porte."},{w:"derrière",s:"Le chat se cache derrière le rideau."},
+ {w:"pendant",s:"Il a dormi pendant le film."},{w:"comme",s:"Il court comme Sonic."},
+ {w:"sans",s:"Il sort sans son manteau."},{w:"sous",s:"Mes chaussons sont sous le lit."},
+ {w:"sur",s:"Le livre est sur la table."},{w:"vite",s:"Cours vite !"},
+ {w:"quand",s:"Quand il neige, on fait un bonhomme."},{w:"rien",s:"Je n'ai rien vu."},
+ {w:"dehors",s:"On joue dehors."},{w:"ensemble",s:"Nous chantons ensemble."},
+ {w:"trop",s:"Cette soupe est trop chaude."},{w:"assez",s:"Tu as assez mangé ?"},
+ {w:"longtemps",s:"Le dragon a dormi longtemps."},{w:"parfois",s:"Parfois, mon chat ronfle."},
+ {w:"ensuite",s:"Ensuite, on range la classe."},{w:"d'abord",s:"D'abord, on se lave les mains."}
+];
+const DICTEES_CE2 = [
+ "Les chats dorment sur le canapé.",
+ "Mon frère a un vélo rouge.",
+ "Les enfants jouent dans la cour.",
+ "Le creeper est caché derrière l'arbre.",
+ "Nous allons à la piscine.",
+ "Les dragons ont de grandes ailes.",
+ "On mange des crêpes ce soir.",
+ "Ma sœur est très contente.",
+ "Le chevalier lève son épée.",
+ "Les sorciers sont dans le château.",
+ "Il faut ranger la chambre.",
+ "Le gardien a arrêté le ballon.",
+ "Les oiseaux chantent dans les arbres.",
+ "Tu prépares un gâteau au chocolat.",
+ "Mario et Luigi font la course.",
+ "Les pirates cherchent un trésor.",
+ "Les poules pondent des œufs.",
+ "Le chien a mangé mon goûter.",
+ "Mes amis sont en vacances.",
+ "La potion est magique."
+];
+const RELECTURE_CE2 = [
+ {x:"Les {zombie|zombies} sortent la nuit. Steve {à|a} construit une maison pour se cacher. Il {ferment|ferme} la porte à clé.",w:["« Les » : plusieurs zombies, donc un s.","« Steve avait construit » marche, donc « a ».","Qui ferme ? Steve, tout seul : « il ferme »."]},
+ {x:"Mario {est|et} Luigi font une course de karts. Le kart rouge {roulent|roule} plus vite. Mais Luigi {à|a} une carapace !",w:["« Mario et puis Luigi » marche : c'est « et ».","Qui roule ? Le kart rouge, un seul : « il roule ».","« Luigi avait une carapace » marche, donc « a »."]},
+ {x:"Les pirates {cherche|cherchent} un trésor. Le capitaine regarde {sont|son} plan. Le trésor {et|est} caché sur une île.",w:["Qui cherche ? Les pirates : « ils cherchent ».","« Il regarde mon plan » marche, donc « son ».","« Le trésor était caché » marche, donc « est »."]},
+ {x:"Ce matin, Papa a {préparer|préparé} des crêpes. Mes frères {mange|mangent} tout. Il ne reste plus de crêpes {chaude|chaudes} pour moi !",w:["« Papa a mordu » marche, donc « é ».","Qui mange ? Mes frères : « ils mangent ».","« des crêpes » : plusieurs, donc « chaudes »."]},
+ {x:"Les Gaulois {on|ont} une potion magique. Quand ils la boivent, ils deviennent très {fort|forts}. Les Romains {son|sont} terrifiés !",w:["« Les Gaulois avaient une potion » marche, donc « ont ».","Qui devient fort ? Ils, les Gaulois : plusieurs, « forts ».","« Les Romains étaient terrifiés » marche, donc « sont »."]},
+ {x:"Le dresseur veut {capturé|capturer} un Pokémon. Il lance une Poké Ball. Le Pokémon {s'échappent|s'échappe} dans les {herbe|herbes} hautes.",w:["« veut mordre » marche, donc « er ».","Qui s'échappe ? Le Pokémon, un seul : « il s'échappe ».","« les herbes » : plusieurs, donc un s."]},
+ {x:"Mes copines {joue|jouent} au volley. Elles {on|ont} gagné le match. Leurs parents {applaudit|applaudissent} très fort.",w:["Qui joue ? Mes copines : « elles jouent ».","« Elles avaient gagné » marche, donc « ont ».","Qui applaudit ? Leurs parents : « ils applaudissent »."]},
+ {x:"Dans le jardin, il y a trois {oiseau|oiseaux}. Ils {mange|mangent} des graines. Mon chat les regarde {est|et} se lèche les moustaches.",w:["Un oiseau, des oiseaux : les mots en -eau prennent un x.","Qui mange ? Les oiseaux : « ils mangent ».","« Il les regarde et puis se lèche » marche : c'est « et »."]}
+].map(r=>({...r,t:"text"}));
+
+/* =====================================================================
+   CM1 : chaîne d'accords du groupe du nom, sujet et verbe, participe passé
+   avec être, passé composé, imparfait, futur, homophones a/à … peu/peut
+   ===================================================================== */
+const CHASSE_CM1 = [
+ ["Les {creeper|creepers} explosent quand on s'approche.", "« Les » annonce plusieurs creepers : on ajoute un s."],
+ ["Les dresseurs de Pokémon {voyage|voyagent} dans toute la région.", "Qui voyage ? Les dresseurs : « ils voyagent ». « de Pokémon » est juste à côté du verbe, mais ne commande rien."],
+ ["La course est {terminé|terminée} : Luigi a gagné !", "« est mordue », donc « é ». Qui est terminé ? La course : féminin, « terminée »."],
+ ["Les karts sont {arrivé|arrivés} ensemble.", "« sont mordus », donc « é ». Qui est arrivé ? Les karts : masculin pluriel, « arrivés »."],
+ ["Ma cousine est {tombé|tombée} de son vélo.", "Avec « être », on accorde avec le sujet. Qui est tombé ? Ma cousine : « tombée »."],
+ ["Le sorcier a {lancer|lancé} un sort.", "« a mordu », donc « é »."],
+ ["Les élèves doivent {apporté|apporter} leur cahier.", "« doivent mordre », donc « er »."],
+ ["Le chevalier range {ces|ses} armes : ce sont les siennes.", "Ce sont les siennes : « ses »."],
+ ["Regarde {ses|ces} nuages noirs, là-bas !", "On les montre du doigt (« ces nuages-là ») : « ces »."],
+ ["Le pirate {ce|se} cache derrière le mât.", "On peut dire « je me cache » : c'est « se », collé au verbe."],
+ ["J'adore {se|ce} jeu de construction.", "Devant un nom, on peut dire « ce jeu-là » : c'est « ce »."],
+ ["Le kangourou {peu|peut} sauter très haut.", "« Il pouvait sauter » marche, donc « peut »."],
+ ["Il reste très {peut|peu} de potion.", "« Pas beaucoup de potion » : c'est « peu »."],
+ ["J'ai rangé {mais|mes} cartes dans le classeur.", "Ce sont les miennes : « mes ». « Mais » veut dire « pourtant »."],
+ ["Il pleut, {mes|mais} le match continue.", "On peut dire « pourtant » : c'est « mais »."],
+ ["Les gros nuages gris cachent le soleil.", "Zéro faute ! « gris » finit déjà par un s : un nuage gris, des nuages gris."],
+ ["Hier, les enfants {jouait|jouaient} dans le jardin.", "Qui jouait ? Les enfants : « ils jouaient », à l'imparfait."],
+ ["Demain, tu {prendra|prendras} le bus.", "Avec « tu », le verbe prend un s, même au futur : tu prendras."],
+ ["Les Schtroumpfs {habite|habitent} dans des champignons.", "Qui habite ? Les Schtroumpfs : « ils habitent »."],
+ ["Le dragon et le chevalier {combat|combattent} toute la nuit.", "Le dragon et le chevalier, c'est « ils » : « ils combattent »."],
+ ["Les portes du donjon {était|étaient} fermées.", "Qui était fermé ? Les portes : « elles étaient ». « du donjon » ne commande rien."],
+ ["La princesse est {partit|partie} à l'aventure.", "Avec « être », on accorde avec le sujet. Qui est parti ? La princesse : féminin, « partie »."],
+ ["Les joueuses ont {gagnées|gagné} le match.", "Avec « avoir », pas d'accord avec le sujet : « ont gagné »."],
+ ["Chaque {joueurs|joueur} a reçu une médaille.", "Chaque = un seul, toujours au singulier."],
+ ["Les fleurs de mon jardin {sent|sentent} bon.", "Qui sent ? Les fleurs (pas le jardin) : « elles sentent »."],
+ ["Mes parents {on|ont} acheté une Switch.", "« avaient acheté » marche, donc « ont »."],
+ ["Le volcan {et|est} entré en éruption.", "« était entré » marche, donc « est »."],
+ ["Le magicien sort un lapin de {sont|son} chapeau.", "« de mon chapeau » marche, donc « son »."],
+ ["{Ou|Où} as-tu caché la clé ?", "On demande un lieu : « où », avec un accent."],
+ ["Tu préfères le foot {où|ou} le volley ?", "« ou bien le volley » marche : « ou », sans accent."],
+ ["Les chevaux {blanc|blancs} galopent sur la plage.", "Qui est blanc ? Les chevaux : « blancs »."],
+ ["Ces histoires de fantômes sont {effrayants|effrayantes}.", "Qui est effrayant ? Les histoires (pas les fantômes) : féminin pluriel, « effrayantes »."],
+ ["Nous mangeons des {pâte|pâtes} ce soir.", "« des » annonce un pluriel : « pâtes »."],
+ ["Les héros sont {fatigué|fatigués} après le combat.", "Qui est fatigué ? Les héros : masculin pluriel, « fatigués »."],
+ ["Le robot {peux|peut} parler trois langues.", "Avec « il » (le robot), c'est « peut » : je peux, tu peux, il peut."],
+ ["Mon équipe a gagné deux matchs.", "Zéro faute ! « deux matchs », avec un s."],
+ ["La maison est entourée de grands arbres.", "Zéro faute ! La maison est entourée (féminin), et « grands arbres » est au masculin pluriel."],
+ ["Le pain et le beurre {est|sont} sur la table.", "Le pain et le beurre, c'est « ils » : « sont »."]
+];
+const MORDRE_CM1 = [
+ {s:"Le gardien va ___ le ballon.", o:["attraper","attrapé","attrapée"], a:0, w:"« va mordre », donc « er »."},
+ {s:"Le gardien a ___ le ballon.", o:["attraper","attrapé","attrapés"], a:1, w:"« a mordu », donc « é ». Avec avoir, pas d'accord avec le sujet."},
+ {s:"La porte est ___ à clé.", o:["fermer","fermé","fermée"], a:2, w:"« est mordue », donc « é ». Qui ? La porte : « ée »."},
+ {s:"Les volets sont ___.", o:["fermer","fermé","fermés","fermées"], a:2, w:"« sont mordus », donc « é ». Qui ? Les volets : masculin pluriel, « és »."},
+ {s:"Les fenêtres sont ___.", o:["fermer","fermés","fermées"], a:2, w:"« sont mordues », donc « é ». Qui ? Les fenêtres : féminin pluriel, « ées »."},
+ {s:"Il faut ___ les plantes.", o:["arroser","arrosé","arrosées"], a:0, w:"« il faut mordre », donc « er »."},
+ {s:"Les plantes sont ___ chaque soir.", o:["arroser","arrosé","arrosées"], a:2, w:"« sont mordues », donc « é ». Qui ? Les plantes : « ées »."},
+ {s:"Ma tante est ___ hier soir.", o:["arriver","arrivé","arrivée"], a:2, w:"« est mordue », donc « é ». Qui est arrivé ? Ma tante : « ée »."},
+ {s:"Mon oncle est ___ en avion.", o:["arriver","arrivé","arrivée"], a:1, w:"« est mordu », donc « é ». Qui ? Mon oncle : masculin, « é » tout court."},
+ {s:"Les Gaulois ont ___ les Romains.", o:["chasser","chassé","chassés"], a:1, w:"« ont mordu », donc « é ». Avec avoir, pas d'accord avec le sujet."},
+ {s:"Les Romains sont ___ par les Gaulois.", o:["chasser","chassé","chassés"], a:2, w:"« sont mordus », donc « é ». Qui ? Les Romains : « és »."},
+ {s:"Le dresseur doit ___ son Pokémon.", o:["soigner","soigné","soignée"], a:0, w:"« doit mordre », donc « er »."},
+ {s:"Le Pokémon blessé est ___ par l'infirmière.", o:["soigner","soigné","soignés"], a:1, w:"« est mordu », donc « é ». Qui ? Le Pokémon, un seul : « é »."},
+ {s:"Les zombies vont ___ le village.", o:["attaquer","attaqué","attaqués"], a:0, w:"« vont mordre », donc « er »."},
+ {s:"Le village est ___ par les zombies.", o:["attaquer","attaqué","attaquée"], a:1, w:"« est mordu », donc « é ». Qui ? Le village : masculin singulier, « é »."},
+ {s:"Les maisons sont ___ en bois.", o:["fabriquer","fabriqués","fabriquées"], a:2, w:"« sont mordues », donc « é ». Qui ? Les maisons : féminin pluriel, « ées »."},
+ {s:"La sorcière a ___ une potion.", o:["préparer","préparé","préparée"], a:1, w:"« a mordu », donc « é ». Avec avoir, pas d'accord avec la sorcière."},
+ {s:"La potion est ___ dans un chaudron.", o:["préparer","préparé","préparée"], a:2, w:"« est mordue », donc « é ». Qui ? La potion : « ée »."},
+ {s:"Les chanteuses vont ___ sur scène.", o:["monter","monté","montées"], a:0, w:"« vont mordre », donc « er »."},
+ {s:"Les chanteuses sont ___ sur scène.", o:["monter","montés","montées"], a:2, w:"« sont mordues », donc « é ». Qui ? Les chanteuses : « ées »."},
+ {s:"Le trésor est ___ sous le sable.", o:["cacher","caché","cachée"], a:1, w:"« est mordu », donc « é ». Qui ? Le trésor : « é » tout court."},
+ {s:"On peut ___ dans la piscine.", o:["plonger","plongé","plongés"], a:0, w:"« on peut mordre », donc « er »."},
+ {s:"Les enfants ont ___ dans la piscine.", o:["plonger","plongé","plongés"], a:1, w:"« ont mordu », donc « é ». Avec avoir, pas d'accord avec le sujet."},
+ {s:"Ma sœur est ___ en CM1.", o:["entrer","entré","entrée"], a:2, w:"« est mordue », donc « é ». Qui ? Ma sœur : « ée »."},
+ {s:"La tarte est ___ en six parts.", o:["couper","coupé","coupée"], a:2, w:"« est mordue », donc « é ». Qui ? La tarte : « ée »."},
+ {s:"Les cookies sont ___ en dix minutes.", o:["dévorer","dévorés","dévorées"], a:1, w:"« sont mordus », donc « é ». Qui ? Les cookies : masculin pluriel, « és »."},
+ {s:"Pour ___ le boss, il faut trois coups.", o:["éliminer","éliminé"], a:0, w:"« pour mordre », donc « er ». Après « pour », toujours « er »."},
+ {s:"Les feuilles sont ___ par le vent.", o:["emporter","emportés","emportées"], a:2, w:"« sont mordues », donc « é ». Qui ? Les feuilles : « ées »."},
+ {s:"Le match est ___ à cause de l'orage.", o:["annuler","annulé","annulée"], a:1, w:"« est mordu », donc « é ». Qui ? Le match : « é » tout court."}
+];
+const JUMEAUX_CM1 = [
+ {s:"Le chevalier ___ perdu son casque.", o:["a","à"], a:0, w:"« avait perdu » marche, donc « a »."},
+ {s:"Ils partent ___ la montagne.", o:["a","à"], a:1, w:"« Ils partent avait la montagne » ne veut rien dire, donc « à »."},
+ {s:"Le robot ___ une batterie neuve.", o:["a","à"], a:0, w:"« Le robot avait une batterie » marche, donc « a »."},
+ {s:"La piscine est ___ deux minutes d'ici.", o:["a","à"], a:1, w:"« avait deux minutes d'ici » ne veut rien dire, donc « à »."},
+ {s:"Le fantôme ___ très pâle.", o:["et","est"], a:1, w:"« Le fantôme était très pâle » marche, donc « est »."},
+ {s:"Il saute ___ il marque !", o:["et","est"], a:0, w:"« Il saute et puis il marque » marche, donc « et »."},
+ {s:"La plage ___ pleine de monde.", o:["et","est"], a:1, w:"« La plage était pleine » marche, donc « est »."},
+ {s:"Les élèves ___ fini leur exposé.", o:["on","ont"], a:1, w:"« avaient fini » marche, donc « ont »."},
+ {s:"___ dirait que l'orage arrive.", o:["On","Ont"], a:0, w:"« Il dirait » marche, donc « On »."},
+ {s:"Les Romains ___ peur des Gaulois.", o:["on","ont"], a:1, w:"« Les Romains avaient peur » marche, donc « ont »."},
+ {s:"Les cookies ___ encore chauds.", o:["son","sont"], a:1, w:"« Les cookies étaient chauds » marche, donc « sont »."},
+ {s:"Le magicien agite ___ chapeau.", o:["son","sont"], a:0, w:"« Il agite mon chapeau » marche, donc « son »."},
+ {s:"Où ___ passés mes crayons ?", o:["son","sont"], a:1, w:"« Où étaient passés mes crayons ? » marche, donc « sont »."},
+ {s:"Je ne sais pas ___ j'ai rangé ma pioche.", o:["ou","où"], a:1, w:"C'est un lieu (l'endroit où elle est), donc « où »."},
+ {s:"Tu prends le kart bleu ___ le rouge ?", o:["ou","où"], a:0, w:"« ou bien le rouge » marche, donc « ou »."},
+ {s:"Le berger compte ___ moutons : ce sont les siens.", o:["ses","ces"], a:0, w:"Ce sont les siens : « ses »."},
+ {s:"Tu vois ___ montagnes, au loin ?", o:["ces","ses"], a:0, w:"On les montre : « ces montagnes-là »."},
+ {s:"La sorcière range ___ potions sur l'étagère.", o:["ses","ces"], a:0, w:"Ce sont les siennes : « ses »."},
+ {s:"___ bonbons sont à qui ?", o:["Ces","Ses"], a:0, w:"On les montre : « ces bonbons-là »."},
+ {s:"Le chat ___ lave avec sa langue.", o:["se","ce"], a:0, w:"On peut dire « je me lave » : c'est « se »."},
+ {s:"___ dragon est immense !", o:["Ce","Se"], a:0, w:"Devant un nom, on peut dire « ce dragon-là » : c'est « ce »."},
+ {s:"Les joueurs ___ préparent pour la finale.", o:["se","ce"], a:0, w:"On peut dire « nous nous préparons » : c'est « se »."},
+ {s:"J'ai rangé ___ chaussures.", o:["mes","mais"], a:0, w:"Ce sont les miennes : « mes »."},
+ {s:"Il est petit, ___ il court vite.", o:["mais","mes"], a:0, w:"On peut dire « pourtant » : c'est « mais »."},
+ {s:"___ amis viennent ce soir.", o:["Mes","Mais"], a:0, w:"Ce sont les miens : « mes »."},
+ {s:"Il ___ nager sans bouée.", o:["peut","peu"], a:0, w:"« Il pouvait nager » marche, donc « peut »."},
+ {s:"Il y a ___ de nuages aujourd'hui.", o:["peu","peut"], a:0, w:"« Pas beaucoup de nuages » : c'est « peu »."},
+ {s:"Le zombie ___ entrer par la fenêtre.", o:["peut","peu"], a:0, w:"« Le zombie pouvait entrer » marche, donc « peut »."},
+ {s:"Mange un ___ de soupe.", o:["peu","peut"], a:0, w:"« Un peu » = une petite quantité : c'est « peu »."}
+];
+const ACCORDS_CM1 = [
+ {s:"Les ___ chevaliers montent la garde.", o:["courageux","courageuse","courageuses"], a:0, w:"Les chevaliers : masculin pluriel. « Courageux » finit déjà par un x."},
+ {s:"Les sorcières ___ préparent une potion.", o:["méchantes","méchants","méchante"], a:0, w:"Les sorcières : féminin pluriel, « méchantes »."},
+ {s:"J'ai acheté des chaussettes ___.", o:["rayées","rayés","rayée"], a:0, w:"Des chaussettes : féminin pluriel, « rayées »."},
+ {s:"Les chats de ma voisine ___ sur le toit.", o:["dorment","dort"], a:0, w:"Qui dort ? Les chats (pas la voisine) : « ils dorment »."},
+ {s:"Le sac de mes cousins ___ très lourd.", o:["est","sont"], a:0, w:"Qui est lourd ? Le sac, un seul : « est »."},
+ {s:"Les bougies du gâteau ___ allumées.", o:["sont","est"], a:0, w:"Qui est allumé ? Les bougies : « sont »."},
+ {s:"Toi et moi, nous ___ une cabane.", o:["construisons","construisent","construit"], a:0, w:"Toi et moi = nous : « construisons »."},
+ {s:"Ma sœur et ma mère ___ au marché.", o:["vont","va"], a:0, w:"Ma sœur et ma mère, c'est « elles » : « vont »."},
+ {s:"Hier soir, les zombies ___ partout.", o:["étaient","était"], a:0, w:"Qui était partout ? Les zombies : « ils étaient »."},
+ {s:"Autrefois, les chevaliers ___ des armures.", o:["portaient","portait"], a:0, w:"Qui portait ? Les chevaliers : « ils portaient »."},
+ {s:"Demain, nous ___ au cinéma.", o:["irons","iront"], a:0, w:"Avec « nous », c'est toujours « -ons » : nous irons."},
+ {s:"Plus tard, ils ___ astronautes.", o:["seront","serons"], a:0, w:"Avec « ils », c'est « -ont » : ils seront."},
+ {s:"Tu ___ ton vélo demain.", o:["répareras","réparera"], a:0, w:"Avec « tu », le verbe prend un s : tu répareras."},
+ {s:"Les fleurs du bouquet sont ___.", o:["fanées","fanés","fanée"], a:0, w:"Qui est fané ? Les fleurs : féminin pluriel, « fanées »."},
+ {s:"Le ciel est ___ ce soir.", o:["étoilé","étoilée","étoilés"], a:0, w:"Le ciel : masculin singulier, « étoilé »."},
+ {s:"Ces deux équipes sont très ___.", o:["fortes","forts","forte"], a:0, w:"Les équipes : féminin pluriel, « fortes »."},
+ {s:"Les loups ___ dans la forêt.", o:["hurlent","hurle"], a:0, w:"Qui hurle ? Les loups : « ils hurlent »."},
+ {s:"Chaque ___ reçoit un cadeau.", o:["enfant","enfants"], a:0, w:"Chaque = un seul, toujours au singulier."},
+ {s:"Tous les ___ ont un casque.", o:["joueurs","joueur"], a:0, w:"« Tous les » annonce un pluriel : « joueurs »."},
+ {s:"Les ___ de la reine brillent.", o:["bijoux","bijou"], a:0, w:"Un bijou, des bijoux : avec un x."},
+ {s:"Il a acheté deux kilos de ___.", o:["farine","farines"], a:0, w:"De la farine, ça ne se compte pas : « deux kilos de farine »."},
+ {s:"La maîtresse et les élèves ___ contents.", o:["sont","est"], a:0, w:"La maîtresse et les élèves, c'est « ils » : « sont »."},
+ {s:"Les ___ gâteaux sont pour la fête.", o:["beaux","belles","beau"], a:0, w:"Les gâteaux : masculin pluriel, « beaux »."}
+];
+const NOMBRES_CM1 = [
+ {s:"Le dragon dort depuis quatre-___ ans.", o:["vingts","vingt"], a:0, w:"Quatre fois vingt, et rien après : « quatre-vingts », avec un s."},
+ {s:"Il y a quatre-___-dix élèves dans l'école.", o:["vingt","vingts"], a:0, w:"Un autre nombre suit vingt (dix) : pas de s. Quatre-vingt-dix."},
+ {s:"Le boss a trois ___ points de vie.", o:["cents","cent"], a:0, w:"Trois fois cent, et rien après : « trois cents », avec un s."},
+ {s:"Ce château a six ___ vingt ans.", o:["cent","cents"], a:0, w:"Un autre nombre suit cent (vingt) : pas de s. Six cent vingt."},
+ {s:"Les Gaulois sont deux ___.", o:["mille","milles"], a:0, w:"Mille ne prend jamais de s."},
+ {s:"La ville compte trois ___ d'habitants.", o:["millions","million"], a:0, w:"Million est un nom, comme « un paquet » : trois millions, avec un s."},
+ {s:"Le nombre 4 207 s'écrit avec quatre ___.", o:["chiffres","nombres"], a:0, w:"4, 2, 0 et 7 sont des chiffres. Avec eux, on écrit un nombre."},
+ {s:"Les deux ___ coureuses ont un trophée.", o:["premières","premiers","première"], a:0, w:"Premier s'accorde comme un adjectif : les coureuses, féminin pluriel, « premières »."},
+ {s:"Il va ___ neiger demain.", o:["peut-être","peut être"], a:0, w:"Si on peut dire « sans doute », c'est « peut-être », avec un trait d'union."}
+];
+const MOTJUSTE_CM1 = [
+ {s:"La vache broute dans le ___.", o:["champ","chant"], a:0, w:"Le champ : le terrain où poussent l'herbe ou le blé. Le chant : quand on chante."},
+ {s:"Le ___ du coq me réveille.", o:["chant","champ"], a:0, w:"Le chant : ce qu'on entend quand on chante. Le champ : un terrain."},
+ {s:"Mamie m'a raconté un ___ de fées.", o:["conte","compte"], a:0, w:"Un conte : une histoire. Le compte : quand on compte."},
+ {s:"Le marchand fait le ___ des pièces d'or.", o:["compte","conte"], a:0, w:"Le compte : quand on compte. Un conte : une histoire."},
+ {s:"Les élèves jouent dans la ___ de récréation.", o:["cour","cours","court"], a:0, w:"La cour : l'espace dehors. Un cours : une leçon. Court : le contraire de long."},
+ {s:"Ce short est trop ___.", o:["court","cour","cours"], a:0, w:"Court : le contraire de long. La cour : l'espace dehors. Un cours : une leçon."},
+ {s:"Ma ___ habite à Lyon.", o:["tante","tente"], a:0, w:"La tante : la sœur de papa ou de maman. La tente : on dort dedans en camping."},
+ {s:"En camping, on dort sous la ___.", o:["tente","tante"], a:0, w:"La tente : on dort dedans. La tante : la sœur de papa ou de maman."},
+ {s:"Le cavalier pose la ___ sur le dos du cheval.", o:["selle","sel"], a:0, w:"La selle : le siège du cavalier. Le sel : on en met dans la soupe."},
+ {s:"Il manque du ___ dans la soupe.", o:["sel","selle"], a:0, w:"Le sel : on en met dans la soupe. La selle : le siège du cavalier."},
+ {s:"À la ___ du film, tout le monde applaudit.", o:["fin","faim"], a:0, w:"La fin : le moment où ça s'arrête. La faim : l'envie de manger."},
+ {s:"Après le match, j'ai très ___.", o:["faim","fin"], a:0, w:"La faim : l'envie de manger. La fin : le moment où ça s'arrête."},
+ {s:"Mon vélo est attaché avec une ___.", o:["chaîne","chêne"], a:0, w:"La chaîne : des anneaux de métal. Le chêne : un grand arbre."},
+ {s:"Un écureuil vit dans le vieux ___.", o:["chêne","chaîne"], a:0, w:"Le chêne : un grand arbre. La chaîne : des anneaux de métal."}
+];
+const MOTS_CM1 = [
+ {w:"autour",s:"Les abeilles volent autour de la ruche."},{w:"beaucoup",s:"Il y a beaucoup de zombies cette nuit."},
+ {w:"bientôt",s:"L'hiver arrive bientôt."},{w:"combien",s:"Combien de diamants as-tu trouvés ?"},
+ {w:"dessous",s:"Le chat dort dessous."},{w:"dessus",s:"Pose ton sac dessus."},
+ {w:"dedans",s:"Ouvre le coffre : le trésor est dedans."},{w:"depuis",s:"Il pleut depuis ce matin."},
+ {w:"enfin",s:"Enfin les vacances !"},{w:"environ",s:"Il y a environ cent élèves."},
+ {w:"ici",s:"Le trésor est caché ici."},{w:"loin",s:"Le château est loin."},
+ {w:"lorsque",s:"Lorsque la nuit tombe, les zombies sortent."},{w:"mieux",s:"Tu chantes de mieux en mieux."},
+ {w:"moins",s:"Il fait moins froid aujourd'hui."},{w:"parfois",s:"Parfois, mon chien ronfle."},
+ {w:"partout",s:"Il y a des feuilles partout."},{w:"pendant",s:"Il a neigé pendant la nuit."},
+ {w:"pourquoi",s:"Pourquoi le ciel est-il bleu ?"},{w:"pourtant",s:"Il est petit, pourtant il saute très haut."},
+ {w:"près",s:"L'école est tout près."},{w:"quelquefois",s:"Quelquefois, on mange dehors."},
+ {w:"seulement",s:"Il reste seulement deux cookies."},{w:"soudain",s:"Soudain, le dragon se réveille."},
+ {w:"surtout",s:"Surtout, ne réveille pas le dragon !"},{w:"tard",s:"Il est tard, au lit !"},
+ {w:"tôt",s:"Je me lève tôt le lundi."},{w:"toujours",s:"Le chat dort toujours sur mon lit."},
+ {w:"tout à coup",s:"Tout à coup, la lumière s'éteint."},{w:"vraiment",s:"Ce boss est vraiment fort."},
+ {w:"déjà",s:"Tu as déjà fini ?"},{w:"hier",s:"Hier, on est allés au musée."},
+ {w:"aujourd'hui",s:"Aujourd'hui, c'est mon anniversaire."},{w:"peut-être",s:"Il va peut-être neiger."},
+ {w:"d'abord",s:"D'abord, on lit la consigne."},{w:"ensuite",s:"Ensuite, on répond aux questions."},
+ {w:"longtemps",s:"Le château est abandonné depuis longtemps."},{w:"maintenant",s:"Maintenant, tu peux jouer."},
+ {w:"plusieurs",s:"J'ai plusieurs cartes en double."},{w:"chaque",s:"Chaque matin, je bois un chocolat."}
+];
+const DICTEES_CM1 = [
+ "Les dragons dorment au fond de la grotte.",
+ "La porte du château est fermée à clé.",
+ "Ma cousine est arrivée en retard.",
+ "Les Gaulois ont gagné la bataille.",
+ "Ces chevaux galopent dans le champ.",
+ "Le chevalier range ses armes.",
+ "Nous irons à la plage demain.",
+ "Les élèves de la classe sont contents.",
+ "Il faut arroser les fleurs fanées.",
+ "Le chat se cache sous le lit.",
+ "Les karts sont arrivés ensemble.",
+ "Autrefois, les rois vivaient dans des châteaux.",
+ "Les sorcières préparent une potion.",
+ "Mes amis jouaient au foot dans la cour.",
+ "La tarte est coupée en six parts.",
+ "Le kangourou peut sauter très haut.",
+ "Les zombies attaquent le village.",
+ "Ma sœur et moi rangeons nos cartes.",
+ "Les volets sont fermés pour la nuit.",
+ "Tu prendras le bus demain."
+];
+const RELECTURE_CM1 = [
+ {x:"Les zombies {attaque|attaquent} le village. Les villageois se {cache|cachent} dans leurs maisons. Heureusement, la porte est bien {fermé|fermée}.",w:["Qui attaque ? Les zombies : « ils attaquent ».","Qui se cache ? Les villageois : « ils se cachent ».","« est mordue », donc « é ». Qui est fermé ? La porte : « fermée »."]},
+ {x:"Ma tante est {arrivé|arrivée} hier soir. Elle a {apporter|apporté} un gâteau au chocolat. Mes frères {on|ont} tout mangé en cinq minutes.",w:["Avec être, on accorde avec le sujet : ma tante, « arrivée ».","« a mordu », donc « é ».","« avaient tout mangé » marche, donc « ont »."]},
+ {x:"Le chevalier lève {sont|son} épée. Le dragon {crachent|crache} du feu. Mais le chevalier {et|est} plus rapide que lui.",w:["« Il lève mon épée » marche, donc « son ».","Qui crache ? Le dragon, un seul : « il crache ».","« le chevalier était plus rapide » marche, donc « est »."]},
+ {x:"Les Gaulois {on|ont} bu la potion magique. Ils sont devenus très {fort|forts}. Les Romains {s'enfuit|s'enfuient} en courant.",w:["« avaient bu » marche, donc « ont ».","Qui est fort ? Ils, les Gaulois : « forts ».","Qui s'enfuit ? Les Romains : « ils s'enfuient »."]},
+ {x:"Je ne sais pas {ou|où} j'ai rangé ma pioche. Elle {étais|était} à côté du coffre. Il faut vite la {retrouvé|retrouver} avant la nuit !",w:["On parle d'un lieu : « où ».","Qui était ? Elle (ma pioche) : « elle était ». Le -s, c'est pour « je » ou « tu ».","« il faut mordre », donc « er »."]},
+ {x:"Les chanteuses montent sur scène. Leurs voix {résonne|résonnent} dans tout le stade. Le public est {émerveiller|émerveillé} et {applaudissent|applaudit}.",w:["Qui résonne ? Leurs voix : « elles résonnent ».","« est mordu », donc « é ». Qui ? Le public : « émerveillé ».","Qui applaudit ? Le public, un seul : « il applaudit »."]},
+ {x:"Demain, nous {iront|irons} à la piscine. Mon frère {peu|peut} déjà nager sans bouée. Moi, je {préfères|préfère} jouer dans le petit bain.",w:["Avec « nous », c'est « -ons » : nous irons.","« il pouvait nager » marche, donc « peut ».","Avec « je », pas de s : je préfère."]},
+ {x:"Le dresseur soigne {ces|ses} Pokémon : ce sont les siens. Ils {son|sont} fatigués après le combat. Demain, ils {sera|seront} en pleine forme.",w:["Ce sont les siens : « ses ».","« ils étaient fatigués » marche, donc « sont ».","Avec « ils », c'est « seront »."]},
+ {x:"Hier, les enfants {jouait|jouaient} dans la cour. Soudain, le ballon est {tomber|tombé} sur le toit. Il {et|est} resté coincé là-haut !",w:["Qui jouait ? Les enfants : « ils jouaient ».","« est mordu », donc « é ».","« il était resté » marche, donc « est »."]}
+].map(r=>({...r,t:"text"}));
+
+/* 6e : participe passé avec avoir (COD placé avant, pronom compris), accords à distance,
+   sujet inversé, impératif, futur ou conditionnel, passé simple, homophones du début du collège */
+BANK["6e"]=[
+ {s:"Les cartes que j'ai ___ sont rares.",o:["trouvées","trouvé","trouvés"],a:0,c:"A",w:"Avec avoir, le participe s'accorde avec le COD s'il est placé avant. « que » remplace « les cartes », placé avant : « trouvées »."},
+ {s:"Ces cookies, je les ai ___ en dix minutes.",o:["mangés","mangé","mangées"],a:0,c:"A",w:"« les » remplace « ces cookies » : COD placé avant avoir, masculin pluriel, « mangés »."},
+ {s:"La potion ? Le sorcier l'a ___ hier.",o:["préparée","préparé","préparés"],a:0,c:"A",w:"« l' » remplace « la potion » : COD placé avant avoir, « préparée »."},
+ {s:"Le sorcier a ___ une potion.",o:["préparé","préparée"],a:0,c:"A",w:"Le COD (une potion) est placé après le verbe : pas d'accord, « a préparé »."},
+ {s:"Les joueuses ont ___ la coupe.",o:["soulevé","soulevées"],a:0,c:"A",w:"Avec avoir, jamais d'accord avec le sujet. Le COD (la coupe) est après : « soulevé »."},
+ {s:"Quelles épées as-tu ___ ?",o:["choisies","choisi","choisis"],a:0,c:"A",w:"Le COD « quelles épées » est placé avant : féminin pluriel, « choisies »."},
+ {s:"La lettre que tu m'as ___ est arrivée.",o:["envoyée","envoyé"],a:0,c:"A",w:"« que » remplace « la lettre », placé avant avoir : « envoyée »."},
+ {s:"Ils ont ___ leurs devoirs avant de jouer.",o:["fini","finis"],a:0,c:"A",w:"Le COD (leurs devoirs) est placé après : pas d'accord, « fini »."},
+ {s:"Leurs devoirs, ils les ont ___ avant de jouer.",o:["finis","fini"],a:0,c:"A",w:"« les » remplace « leurs devoirs » : COD placé avant, « finis »."},
+ {s:"Les chanteuses sont ___ sur scène à vingt heures.",o:["montées","monté","montés"],a:0,c:"A",w:"Avec être, on accorde avec le sujet : les chanteuses, « montées »."},
+ {s:"Ma grand-mère et ma cousine sont ___ en Bretagne.",o:["parties","partis","partie"],a:0,c:"A",w:"Deux sujets féminins, avec être : « parties »."},
+ {s:"Dans la grotte ___ deux dragons.",o:["dormaient","dormait"],a:0,c:"A",w:"Le sujet est placé après le verbe : qui dormait ? Deux dragons, donc « dormaient »."},
+ {s:"Au loin ___ les cloches du village.",o:["sonnent","sonne"],a:0,c:"A",w:"Sujet inversé : qui sonne ? Les cloches, donc « sonnent »."},
+ {s:"Une armée de squelettes ___ vers le château.",o:["avance","avancent"],a:0,c:"A",w:"Le noyau du sujet est « une armée » : un seul groupe, « avance »."},
+ {s:"Les livres que ma tante m'a offerts ___ passionnants.",o:["sont","est"],a:0,c:"A",w:"Qui est passionnant ? Les livres : « sont ». Tout ce qui est entre les deux ne commande rien."},
+ {s:"Des chaussures ___ traînent dans l'entrée.",o:["boueuses","boueux","boueuse"],a:0,c:"A",w:"Des chaussures : féminin pluriel, « boueuses »."},
+ {s:"Les murs du vieux château sont ___ de lierre.",o:["couverts","couvertes","couvert"],a:0,c:"A",w:"Qui est couvert ? Les murs (pas le château) : masculin pluriel, « couverts »."},
+ {s:"La foule des supporters ___ le nom du joueur.",o:["crie","crient"],a:0,c:"A",w:"Le noyau du sujet est « la foule » : un seul groupe, « crie »."},
+ {s:"___ ta chambre avant le dîner !",o:["Range","Ranges"],a:0,c:"C",w:"À l'impératif, les verbes en -er n'ont pas de s : « range »."},
+ {s:"___ tes devoirs, puis tu joueras.",o:["Finis","Finit"],a:0,c:"C",w:"Impératif des verbes en -ir : « finis », avec un s."},
+ {s:"___ vite, le bus arrive !",o:["Viens","Vient"],a:0,c:"C",w:"Impératif de venir, on parle à « tu » : « viens »."},
+ {s:"___ au tableau, s'il te plaît.",o:["Va","Vas"],a:0,c:"C",w:"Impératif de aller : « va », sans s (sauf dans « vas-y »)."},
+ {s:"___ attention aux creepers !",o:["Fais","Fait"],a:0,c:"C",w:"Impératif de faire, on parle à « tu » : « fais »."},
+ {s:"Si j'avais une baguette magique, je ___ des bonbons.",o:["ferais","ferai"],a:0,c:"C",w:"Après « si » et l'imparfait, on met le conditionnel : « je ferais ». Astuce : avec « nous », on dirait « nous ferions »."},
+ {s:"Demain, je ___ à la piscine.",o:["serai","serais"],a:0,c:"C",w:"C'est sûr, ça arrivera demain : futur, « je serai ». Astuce : avec « nous », on dirait « nous serons »."},
+ {s:"Je ___ bien un deuxième dessert.",o:["voudrais","voudrai"],a:0,c:"C",w:"Pour demander poliment : conditionnel, « je voudrais »."},
+ {s:"Quand je serai grand, je ___ astronaute.",o:["deviendrai","deviendrais"],a:0,c:"C",w:"« Quand je serai grand » : c'est le futur, « je deviendrai »."},
+ {s:"Tu ___ venir avec nous si tu voulais.",o:["pourrais","pourras"],a:0,c:"C",w:"« si tu voulais » appelle le conditionnel : « tu pourrais »."},
+ {s:"Les chevaliers ___ vers le château.",o:["galopèrent","galopa"],a:0,c:"C",w:"Passé simple, sujet pluriel : « ils galopèrent » (-èrent)."},
+ {s:"Je ___ la porte et je sortis.",o:["fermai","fermais"],a:0,c:"C",w:"Avec « je sortis » (passé simple), c'est « je fermai ». Imparfait : je fermais."},
+ {s:"Autrefois, les enfants ___ à la plume.",o:["écrivaient","écrivirent"],a:0,c:"C",w:"Une habitude d'autrefois : imparfait, « écrivaient »."},
+ {s:"Hier, nous ___ un film de dragons.",o:["avons regardé","avons regardés"],a:0,c:"C",w:"Passé composé avec avoir : pas d'accord avec « nous ». « avons regardé »."},
+ {s:"Le magicien ___ approché de la cage.",o:["s'est","c'est"],a:0,c:"H",w:"On peut dire « il s'était approché » : c'est le verbe s'approcher, « s'est »."},
+ {s:"___ mon jeu préféré !",o:["C'est","S'est"],a:0,c:"H",w:"On peut dire « cela est mon jeu préféré » : « c'est »."},
+ {s:"Les supporters encouragent ___ équipe.",o:["leur","leurs"],a:0,c:"H",w:"Ils n'ont qu'une équipe : « leur », au singulier."},
+ {s:"Le coach ___ explique la tactique.",o:["leur","leurs"],a:0,c:"H",w:"Devant un verbe, « leur » veut dire « à eux » : jamais de s."},
+ {s:"___ heure est-il ?",o:["Quelle","Qu'elle"],a:0,c:"H",w:"On peut dire « quel temps fait-il ? » : c'est le déterminant « quelle »."},
+ {s:"Je pense ___ viendra demain.",o:["qu'elle","quelle"],a:0,c:"H",w:"On peut dire « qu'il viendra » : c'est « qu'elle » (que + elle)."},
+ {s:"Pose ta pioche ___, à côté du coffre.",o:["là","la","l'a"],a:0,c:"H",w:"« Là » indique un endroit : on peut dire « là-bas »."},
+ {s:"Le ballon ? Le gardien ___ arrêté.",o:["l'a","la","là"],a:0,c:"H",w:"On peut dire « il l'avait arrêté » : « l'a »."},
+ {s:"Il part ___ dire au revoir.",o:["sans","s'en","c'en"],a:0,c:"H",w:"« Sans » est le contraire de « avec »."},
+ {s:"Ils ___ vont à la plage.",o:["s'en","sans","c'en"],a:0,c:"H",w:"On peut dire « je m'en vais » : « s'en » (se + en)."},
+ {s:"___ tu as fini, viens jouer.",o:["Quand","Quant","Qu'en"],a:0,c:"H",w:"« Quand » = lorsque."},
+ {s:"Il ___ va jamais le dimanche.",o:["n'y","ni"],a:0,c:"H",w:"« Il n'y va pas » = il ne va pas là-bas : « n'y » (ne + y)."}
+];
+
+const COL_DESC={"6e":{catA:"Participe passé avec avoir (le COD est-il placé avant ?), sujets inversés, et vingt, cent, mille.",catC:"Impératif, futur ou conditionnel, passé simple ou imparfait."}};
+/* Les trois classes de l'école : chaque mission puise dans le contenu de sa classe */
+const PRIM={
+ ce2:{chasse:CHASSE_CE2,mordre:MORDRE_CE2,jumeaux:JUMEAUX_CE2,accords:ACCORDS_CE2,nombres:NOMBRES_CE2,motjuste:MOTJUSTE_CE2,mots:MOTS_CE2,dictees:DICTEES_CE2,relecture:RELECTURE_CE2,
+  desc:{mordre:"-er ou -é ? « Il va mordre » ou « il a mordu » : choisis la bonne fin.",jumeaux:"a/à, et/est, on/ont, son/sont, ou/où : remplace pour vérifier.",
+   accords:"Les pluriels (s ou x), les adjectifs, et le verbe avec son sujet.",motjuste:"Verre, vert ou ver ? Mer ou mère ? Choisis le mot qui a le bon sens."}},
+ cm1:{chasse:CHASSE_CM1,mordre:MORDRE_CM1,jumeaux:JUMEAUX_CM1,accords:ACCORDS_CM1,nombres:NOMBRES_CM1,motjuste:MOTJUSTE_CM1,mots:MOTS_CM1,dictees:DICTEES_CM1,relecture:RELECTURE_CM1,
+  desc:{mordre:"-er, -é, -ée, -és, -ées : avec être, le participe s'accorde avec le sujet.",jumeaux:"a/à, et/est, on/ont, son/sont, ces/ses, ce/se, mes/mais, peu/peut…",
+   motjuste:"Champ ou chant ? Conte ou compte ? Choisis le mot qui a le bon sens."}},
+ cm2:{chasse:CHASSE,mordre:MORDRE,jumeaux:JUMEAUX,accords:ACCORDS,nombres:NOMBRES_CM2,motjuste:MOTJUSTE_CM2,mots:MOTS_CM2,dictees:DICTEES,relecture:RELECTURE_CM2,desc:{}}
+};
+
 
 /* Toutes les questions à choix d'un niveau, avec leur catégorie (src), un sous-type (sub) et un identifiant stable */
 function levelChoices(level){
   let list;
-  if(level==="cm2") list=[
-    ...MORDRE.map(q=>({...q,src:"I"})),
-    ...JUMEAUX.map(q=>({...q,src:"H"})),
-    ...ACCORDS.map(q=>({...q,src:"A"})),
-    ...NOMBRES_CM2.map(q=>({...q,src:"A",sub:"N"})),
-    ...MOTJUSTE_CM2.map(q=>({...q,src:"V"}))];
+  if(isPrim(level)){ const P=PRIM[level]; list=[
+    ...P.mordre.map(q=>({...q,src:"I"})),
+    ...P.jumeaux.map(q=>({...q,src:"H"})),
+    ...P.accords.map(q=>({...q,src:"A"})),
+    ...P.nombres.map(q=>({...q,src:"A",sub:"N"})),
+    ...P.motjuste.map(q=>({...q,src:"V"}))] }
   else {
-    const low=level==="5e"||level==="4e";
+    const low=level==="6e"||level==="5e"||level==="4e";
     list=[
       ...(BANK[level]||[]).map(q=>({...q,src:q.c})),
       ...NOMBRES_COL.filter(q=>low||q.h).map(q=>({...q,src:"A",sub:"N"})),
       ...(low?HOMO_COL:[]).map(q=>({...q,src:"H"})),
-      ...(level==="5e"?MOTJUSTE_CM2:[]).concat(MOTJUSTE_COL).map(q=>({...q,src:"V"}))];
+      ...(level==="5e"||level==="6e"?MOTJUSTE_CM2:[]).concat(MOTJUSTE_COL).map(q=>({...q,src:"V"}))];
   }
   return list.map(q=>({...q,id:qid(q)}));
 }
 /* Chasse aux fautes : au CM2 les phrases écrites à la main ; au-delà, dérivées des questions
    (3 phrases sur 4 contiennent la faute la plus tentante, 1 sur 4 est juste) */
 function chassePool(level){
-  if(level==="cm2") return CHASSE.map((c,i)=>[c[0],c[1],CHASSE_CAT[i]]);
+  if(isPrim(level)) return PRIM[level].chasse.map(c=>[c[0],c[1],chasseCat(c[0])]);
   return (BANK[level]||[]).map((q,i)=>{
     const right=q.o[q.a];
     if(i%4===3) return [q.s.replace("___",right),"Zéro faute ! "+q.w,q.c];
@@ -953,9 +1442,9 @@ function chassePool(level){
    (c'est voulu) et ne vont jamais dans les pièges.
    ===================================================================== */
 const GEN={
- subj:[["Pikachu","m",1],["Nezuko","f",1],["Les ninjas","m",2],["Les joueuses","f",2],["La princesse","f",1],["Le gardien","m",1],
-  ["Mes cartes Pokémon","f",2],["Les dragons","m",2],["Ma petite sœur","f",1],["Les supporters","m",2],["Conan","m",1],["Les manettes","f",2],
-  ["Les pizzas","f",2],["Le ballon","m",1],["Zenitsu","m",1],["Les statues","f",2],["Mon chat","m",1],["Les sorcières","f",2],["Le trophée","m",1],["Les crêpes","f",2]],
+ subj:[["Le Pokémon","m",1],["La championne","f",1],["Les ninjas","m",2],["Les joueuses","f",2],["La princesse","f",1],["Le gardien","m",1],
+  ["Mes cartes Pokémon","f",2],["Les dragons","m",2],["Ma petite sœur","f",1],["Les supporters","m",2],["Le détective","m",1],["Les manettes","f",2],
+  ["Les pizzas","f",2],["Le ballon","m",1],["Le chevalier","m",1],["Les statues","f",2],["Mon chat","m",1],["Les sorcières","f",2],["Le trophée","m",1],["Les crêpes","f",2]],
  verbs:["attraper","réveiller","décorer","capturer","emporter","fêter","féliciter","chatouiller","transporter","oublier","cacher","photographier",
   "filmer","admirer","déguiser","gronder","inviter","porter","sauver","soigner","piéger","encourager","dessiner","retrouver","arrêter"],
  agents:["Conan","un dragon","Sacha","la maîtresse","Tanjiro","un Ronflex","Luffy","mon grand frère","Goku","un ninja"],
@@ -1017,14 +1506,20 @@ function genCOD(){
 }
 /* Une question générée de la catégorie demandée, selon la classe */
 function genChoice(cat){
-  const cm2=PROFILE.level==="cm2";
-  if(cat==="I") return cm2?rnd([genEtre,genEtre,genAvoir,genInf])():null;
-  if(cat==="A") return cm2?genAdj():(PROFILE.level==="5e"&&Math.random()<0.4?genEtre():genCOD());
+  const L=PROFILE.level;
+  if(cat==="I"){ if(L==="ce2") return genSimpleI(); return isPrim(L)?rnd([genEtre,genEtre,genAvoir,genInf])():null }
+  if(cat==="A"){ if(isPrim(L)) return genAdj(); if(L==="6e") return Math.random()<0.5?genEtre():genCOD(); return L==="5e"&&Math.random()<0.4?genEtre():genCOD() }
   return null;
+}
+/* CE2 : seulement -er ou -é, sans accord (« Le dragon a ___ » / « Le dragon va ___ ») */
+function genSimpleI(){
+  const v=rnd(GEN.verbs), ag=cap(rnd(GEN.agents)), [o]=rnd(GEN.obj), r=Math.random();
+  if(r<0.5){ const right=ppOf(v,"m",1); return genPack(`${ag} a ___ ${o}.`,[v,right],right,`« a mordu » (pas « a mordre »), donc « é ».`,"I") }
+  const x=rnd(GEN.aux); return genPack(`${ag} ${x} ___ ${o}.`,[v,ppOf(v,"m",1)],v,`« ${x} mordre » (pas « ${x} mordu »), donc « er ».`,"I");
 }
 /* Version « chasse aux fautes » : 3 fois sur 4 la faute la plus tentante, 1 fois sur 4 zéro faute */
 function genChasse(){
-  const q=genChoice(PROFILE.level==="cm2"?rnd(["I","I","A"]):"A");
+  const q=genChoice(isPrim(PROFILE.level)?rnd(["I","I","A"]):"A");
   const right=q.o[q.a];
   if(Math.random()<0.25) return {it:[q.s.replace("___",right),"Zéro faute ! "+q.w],cat:q.src};
   const wrong=rnd(q.o.filter((_,k)=>k!==q.a));
@@ -1157,15 +1652,15 @@ function renderBoard(){
    A = accords · I = é/er · H = homophones · D = dictée
    ===================================================================== */
 const CATS={A:"Accords",I:"é ou er",H:"Homophones",C:"Conjugaison",D:"Dictée",W:"Mots à retenir",V:"Le mot juste"};
-const HOMO=new Set(["a","à","et","est","on","ont","On","Ont","son","sont","peu","peut","ou","où","ces","ses"]);
-const CHASSE_CAT=CHASSE.map(([s])=>{
+const HOMO=new Set(["a","à","A","À","et","est","Et","Est","on","ont","On","Ont","son","sont","Son","Sont","peu","peut","ou","où","Ou","Où","ces","ses","Ces","Ses","ce","se","Ce","Se","mes","mais","Mes","Mais","la","là","l'a","La","Là"]);
+function chasseCat(s){
   const m=s.match(/\{([^|}]+)\|([^}]+)\}/); if(!m) return "A";
   const [x,y]=[m[1],m[2]];
   if(HOMO.has(x)&&HOMO.has(y)) return "H";
   const er=/er$/, pp=/(é|ée|és|ées)$/;
   if((er.test(x)&&pp.test(y))||(pp.test(x)&&er.test(y))) return "I";
   return "A";
-});
+}
 function dayKey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function logAnswer(cat,ok,slow){
   const k=dayKey(); S.log=S.log||{}; const day=S.log[k]=S.log[k]||{};
@@ -1379,7 +1874,7 @@ function drawTrophies(){
 function weakestCat(){
   const since=new Date(); since.setDate(since.getDate()-14); const lim=dayKey(since);
   const tot={};
-  Object.entries(S.log||{}).forEach(([k,d])=>{ if(k<lim) return; (PROFILE.level==="cm2"?["A","I","H"]:["A","H","C"]).forEach(c=>{ if(d[c]){ const x=tot[c]=tot[c]||[0,0]; x[0]+=d[c][0]; x[1]+=d[c][1] } }) });
+  Object.entries(S.log||{}).forEach(([k,d])=>{ if(k<lim) return; (isPrim(PROFILE.level)?["A","I","H"]:["A","H","C"]).forEach(c=>{ if(d[c]){ const x=tot[c]=tot[c]||[0,0]; x[0]+=d[c][0]; x[1]+=d[c][1] } }) });
   let best=null,bp=2;
   Object.entries(tot).forEach(([c,[g,t]])=>{ if(t>=5 && g/t<bp){bp=g/t;best=c} });
   return best||"A";
@@ -1552,17 +2047,18 @@ function duelEnd(){
 }
 
 /* =====================================================================
-   JOUEURS : un élève par appareil (CM2), et un mode essai sans sauvegarde
+   JOUEURS : un élève par appareil (niveau au choix, du CE2 à Expert), et un mode essai sans sauvegarde
    ===================================================================== */
+const ALL_LEVELS=["ce2","cm1","cm2","6e","5e","4e","3e","2nde","expert"];
 const PROFILES={
-  eleve:{name:"",letter:"★",key:"cdf.classe.v1",doc:null,levels:["cm2"],sub:"",lock:""},
-  guest:{name:"Essai",letter:"?",key:null,doc:null,levels:["cm2"],sub:"",lock:""}
+  eleve:{name:"",letter:"★",key:"cdf.classe.v1",doc:null,def:"cm2",levels:ALL_LEVELS,sub:"",lock:""},
+  guest:{name:"Essai",letter:"?",key:null,doc:null,def:"cm2",levels:ALL_LEVELS,sub:"",lock:""}
 };
 const isGuest=()=>PROFILE.id==="guest";
 const curClass=()=>classOf(PROFILE.level);
 function loadWho(){ try{ return JSON.parse(localStorage.getItem("cdf.who"))||{} }catch(e){ return {} } }
 function saveWho(w){ try{ localStorage.setItem("cdf.who",JSON.stringify(w)) }catch(e){} }
-function profileCats(){ return PROFILE.level==="cm2"?["A","I","H","D","W","V"]:["A","H","C","V"].concat(hasWords()?["W"]:[]) }
+function profileCats(){ return isPrim(PROFILE.level)?["A","I","H","D","W","V"]:["A","H","C","V"].concat(hasWords()?["W"]:[]) }
 
 /* Pas de base en ligne dans l'édition classe : tout reste sur l'appareil */
 let DB, DB_READY=null;
@@ -1594,31 +2090,45 @@ function hasWords(){ return !!(CONTENT.mots&&Array.isArray(CONTENT.mots.words)&&
 /* =====================================================================
    ÉDITION CLASSE : un joueur par appareil, rien n'est envoyé sur Internet
    ===================================================================== */
-/* ---------- Accueil : le prénom (il reste sur l'appareil) ---------- */
+/* ---------- Accueil : le prénom et le niveau (ils restent sur l'appareil) ---------- */
 function chooser(){ welcome() }
+let PICK="cm2";
 function welcome(){
   R=null; stopBlaster(); if(S&&S.dirty&&!isGuest()) save();
   document.body.classList.add("choosing");
-  const who=loadWho();
+  const who=loadWho(); PICK=classOf(who.level).id;
   screen.innerHTML=`<div class="chooser">
     <div class="ch-head"><h1 class="ch-title">Chasseur <span>de fautes</span></h1><button class="ghost sndbtn" type="button">${soundBtnLabel()}</button></div>
-    <p class="intro">Traque les fautes du CM2 : accords, é ou er, homophones, nombres, dictées… Et pour finir, une partie de Mot Blaster.</p>
+    <p class="intro">Traque les fautes, du CE2 à la 2nde : accords, é ou er, homophones, nombres, dictées… Et pour finir, une partie de Mot Blaster.</p>
     <form class="card hello" id="hello">
       <label for="pname">Ton prénom</label>
       <input id="pname" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" value="${esc(who.name||"")}" placeholder="Ton prénom">
-      <button class="primary go-big" type="submit">C'est parti</button>
+      <span class="lbl" id="lvlLbl">Choisis ton niveau</span>
+      <p class="lvl-hint">Ta classe, ou plus haut si tu veux un défi.</p>
+      <div class="lvl-grid" id="lvls" role="radiogroup" aria-labelledby="lvlLbl"></div>
+      <button class="primary go-big" type="submit" id="goBtn">C'est parti</button>
       <p class="prompt">Ton prénom et ta progression restent sur cet appareil. Rien n'est envoyé sur Internet.</p>
     </form>
     <button class="ghost" id="tryGuest" type="button">Juste essayer, sans rien enregistrer</button>
   </div>`;
   screen.querySelectorAll(".sndbtn").forEach(b=>b.onclick=toggleSound);
+  paintLevels();
   $("#hello").onsubmit=e=>{ e.preventDefault();
     const n=$("#pname").value.replace(/[\u0000-\u001f<>"]/g,"").trim().slice(0,16);
     if(!n){ $("#pname").focus(); return }
-    const w=loadWho(); w.name=n; saveWho(w); PROFILES.eleve.name=n; sfx("click"); selectProfile("eleve","cm2") };
-  $("#tryGuest").onclick=()=>{ sfx("click"); selectProfile("guest","cm2") };
+    const w=loadWho(); w.name=n; w.level=PICK; saveWho(w); PROFILES.eleve.name=n; sfx("click"); selectProfile("eleve",PICK) };
+  $("#tryGuest").onclick=()=>{ sfx("click"); selectProfile("guest",PICK) };
   if(!who.name) setTimeout(()=>{ const i=$("#pname"); if(i) i.focus() },50);
 }
+
+function paintLevels(){
+  $("#lvls").innerHTML=CLASSES.map(c=>`<button type="button" role="radio" aria-checked="${c.id===PICK}" class="lvl-chip${c.id===PICK?" on":""}" data-l="${c.id}">
+      <span class="lvl-top"><b>${c.name}</b></span><small>${c.desc}</small></button>`).join("");
+  $("#lvls").querySelectorAll(".lvl-chip").forEach(b=>b.onclick=()=>{ PICK=b.dataset.l; sfx("click"); paintLevels() });
+  $("#goBtn").textContent="C'est parti · "+classOf(PICK).name;
+}
+/* Niveau gardé sur l'appareil */
+function savedLevel(){ return classOf(loadWho().level).id }
 
 /* ---------- Mots de la semaine : ils voyagent dans le lien (#mots=…), sans serveur ---------- */
 function b64urlEncode(str){ let bin=""; new TextEncoder().encode(str).forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"") }
@@ -1719,7 +2229,7 @@ function adultArea(){
       if(!o||o.app!=="chasseur-de-fautes"||!o.save||typeof o.save!=="object") throw 0;
       const w=loadWho(); if(o.name){ w.name=String(o.name).slice(0,16); PROFILES.eleve.name=w.name } saveWho(w);
       try{ localStorage.setItem("cdf.classe.v1",JSON.stringify(o.save)); if(o.mots) localStorage.setItem("cdf.mots",JSON.stringify(o.mots)) }catch(_){}
-      toast("Sauvegarde restaurée","Bon retour, "+(w.name||"champion")+" !"); selectProfile("eleve","cm2");
+      toast("Sauvegarde restaurée","Bon retour, "+(w.name||"champion")+" !"); selectProfile("eleve",savedLevel());
     }catch(_){ $("#bmsg").textContent="Ce fichier n'est pas une sauvegarde du Chasseur de fautes." }
   };
 }
@@ -1745,7 +2255,8 @@ function missionDesc(k){
     if(!g) t+=`<span class="fuelrow">Carburant ${fuelCells()} ${S.fuel>0?`${S.fuel} partie${S.fuel>1?"s":""}`:"vide : réussis une mission pour recharger"}</span>`;
     return t;
   }
-  if(k==="motjuste"&&PROFILE.level!=="cm2") return "Éminent ou imminent ? Prolixe ou prolifique ? Choisis le mot qui a le bon sens. Bonus vocabulaire.";
+  const pd=isPrim(PROFILE.level)?PRIM[PROFILE.level].desc[k]:(COL_DESC[PROFILE.level]||{})[k]; if(pd) return pd;
+  if(k==="motjuste"&&!isPrim(PROFILE.level)) return "Éminent ou imminent ? Prolixe ou prolifique ? Choisis le mot qui a le bon sens. Bonus vocabulaire.";
   if(k==="dictee"||k==="mots"){
     const w=weeklyStatus();
     if(w) return `Mots de la semaine${w.title?` (${esc(w.title)})`:""} : <b>${w.done} / ${w.total}</b> maîtrisés.${k==="dictee"?" Puis une phrase flash.":""}`;
@@ -1755,7 +2266,7 @@ function missionDesc(k){
 function home(){
   R=null; stopBlaster(); if(S.dirty) save(); dailyFuel(); document.body.classList.remove("choosing"); document.body.classList.toggle("guest",isGuest());
   renderBoard();
-  const L=PROFILE.level, g=isGuest(), me=PROFILE.id, cm2=L==="cm2";
+  const L=PROFILE.level, g=isGuest(), me=PROFILE.id, cm2=isPrim(L);
   const card=k=>{ const m=MISSIONS[k]; return `<button class="mission${k==="blaster"?" arcade":""}" data-m="${k}">
       <span class="mark" aria-hidden="true">${m.mark}</span>
       <h3>${m.name}</h3><p>${missionDesc(k)}</p></button>` };
@@ -1859,7 +2370,7 @@ function wordEntries(){
   const m=CONTENT.mots, out=[];
   (m&&Array.isArray(m.words)?m.words:[]).map(cleanWord).filter(Boolean).forEach(w=>out.push(entry(w,"word","W",{weekly:true})));
   (m&&Array.isArray(m.older)?m.older:[]).map(cleanWord).filter(Boolean).forEach(w=>out.push(entry(w,"word","W",{older:true})));
-  if(PROFILE.level==="cm2") MOTS_CM2.forEach(w=>out.push(entry({t:"word",...w},"word","W")));
+  if(isPrim(PROFILE.level)) PRIM[PROFILE.level].mots.forEach(w=>out.push(entry({t:"word",...w},"word","W")));
   const seen=new Set(); return out.filter(e=>!seen.has(e.id)&&seen.add(e.id));
 }
 function pickWords(n){
@@ -1924,14 +2435,14 @@ function chasseRound(){
 }
 function relectureEntry(){
   const L=PROFILE.level;
-  if(L==="cm2") return draw("relecture",RELECTURE_CM2.map(r=>entry(r,"relecture","R")),1)[0];
+  if(isPrim(L)) return draw("relecture_"+L,PRIM[L].relecture.map(r=>entry(r,"relecture","R")),1)[0];
   // collège : 3 phrases fautives + 1 juste, tirées de la chasse du niveau
   const all=chassePool(L), hasErr=c=>/\{/.test(c[0]);
   const parts=shuffle(shuffle(all.filter(hasErr)).slice(0,3).concat(shuffle(all.filter(c=>!hasErr(c))).slice(0,1)));
   const bad=parts.filter(hasErr);
   return entry({t:"text",x:parts.map(c=>c[0]).join(" "),w:bad.map(c=>c[1]),c:bad.map(c=>c[2])},"relecture","R",{gen:true});
 }
-function dicteeRound(){ return pickWords(4).concat(draw("dictee",DICTEES.map(t=>entry(t,"dictee","D")),1)) }
+function dicteeRound(){ const L=PROFILE.level, D=isPrim(L)?PRIM[L].dictees:DICTEES; return pickWords(4).concat(draw("dictee_"+(isPrim(L)?L:"cm2"),D.map(t=>entry(t,"dictee","D")),1)) }
 function defiRound(){
   const traps=trapEntries().slice(0,6);
   if(traps.length>=6) return traps;
@@ -1943,8 +2454,8 @@ function buildRound(mode){
   const L=PROFILE.level, all=levelChoices(L), of=c=>asChoice(all.filter(q=>q.src===c));
   switch(mode){
     case "chasse": return chasseRound();
-    case "mordre": { const k=nGen(); return mixIn(draw("mordre",of("I"),8-k),genEntries("I",k)) }
-    case "jumeaux": return draw("jumeaux",of("H"),8);
+    case "mordre": { const k=nGen(); return mixIn(draw("mordre_"+L,of("I"),8-k),genEntries("I",k)) }
+    case "jumeaux": return draw("jumeaux_"+L,of("H"),8);
     case "accords": case "catA": { const k=nGen(); return mixIn(draw(L+"_A",of("A"),8-k),genEntries("A",k)) }
     case "catH": return draw(L+"_H",of("H"),8);
     case "catC": return draw(L+"_C",of("C"),8);
@@ -2026,8 +2537,8 @@ function promptFor(e){
   if(e.cat==="C") return "Quel temps, quel mode ? Cherche ce qui le commande : si, que, bien que, après que, quand…";
   if(e.cat==="V") return "Lis toute la phrase : quel mot a le bon sens ? Attention aux mots presque jumeaux.";
   if(e.sub==="N") return "Vingt et cent prennent un s seulement s'ils sont multipliés et en fin de nombre. Mille, jamais.";
-  if(e.cat==="A") return PROFILE.level==="cm2"?"Qui commande l'accord ? Trouve-le d'abord, puis choisis.":"Qui commande l'accord ? Avec avoir, cherche le COD : est-il placé avant ?";
-  return PROFILE.level==="cm2"?"Remplace pour vérifier : avait, était, avaient, étaient, ou bien, pouvait…":"Remplace pour vérifier : la bonne réponse garde le sens de la phrase.";
+  if(e.cat==="A") return isPrim(PROFILE.level)?"Qui commande l'accord ? Trouve-le d'abord, puis choisis.":"Qui commande l'accord ? Avec avoir, cherche le COD : est-il placé avant ?";
+  return isPrim(PROFILE.level)?"Remplace pour vérifier : avait, était, avaient, étaient, ou bien, pouvait…":"Remplace pour vérifier : la bonne réponse garde le sens de la phrase.";
 }
 function qChoice(e){
   const it=e.it, parts=it.s.split("___");
@@ -2070,7 +2581,7 @@ function diff(a,b){
   }
   return out;
 }
-const NAMES=["Link","Léo","Nathan","Tanjiro","Zenitsu","Conan","Senku","Naruto","Nezuko","Kogoro","Sasuke","Ran"];
+const NAMES=["Link","Léo","Nathan","Tanjiro","Conan","Senku","Naruto","Mario","Luigi","Steve","Astérix","Obélix","Sonic","Pikachu","Harry","Paris"];
 const PASSES=[
  ["V","Verbes","Pour chaque verbe : qui fait l'action ? La fin du verbe va avec lui."],
  ["A","Groupes du nom","Pour chaque nom : ses copains (le, des, adjectifs) ont le même nombre et le même genre."],
@@ -2402,7 +2913,7 @@ function togglePause(){
 function pickQ(){
   const cat=G.boss?G.boss.cat:null;
   if(Math.random()<0.25){   // une question sur quatre est générée
-    const gc=PROFILE.level==="cm2"?((cat==="I"||cat==="A")?cat:(!cat||cat==="*")?rnd(["I","A"]):null):((!cat||cat==="*"||cat==="A")?"A":null);
+    const gc=isPrim(PROFILE.level)?((cat==="I"||cat==="A")?cat:(!cat||cat==="*")?rnd(["I","A"]):null):((!cat||cat==="*"||cat==="A")?"A":null);
     const g=gc&&genChoice(gc); if(g) return g;
   }
   for(let tries=0;tries<2;tries++){
@@ -2460,7 +2971,7 @@ function spawnBoss(){
   def.kind=G.bossesBeaten%BOSSES.length;
   const hp=Math.min(200,90+25*G.bossesBeaten);
   G.boss={...def,hp,max:hp,x:G.W/2,vx:60,y:G.hudH+38,hit:0,bombT:4,enter:1};
-  if(PROFILE.level!=="cm2"&&G.boss.cat==="I"){ G.boss.cat="C"; G.boss.tag="CONJUGAISON" }
+  if(!isPrim(PROFILE.level)&&G.boss.cat==="I"){ G.boss.cat="C"; G.boss.tag="CONJUGAISON" }
   G.bossHits=0; sfx("boss"); SFX.boss=true;
 }
 // Retire un bouclier. À 0 bouclier on perd une vie ; à 0 vie, c'est fini.
@@ -2861,7 +3372,7 @@ function catRate(cat){
   return t>=5?Math.round(g/t*100):null;
 }
 function bossRule(B){
-  const cm2=PROFILE.level==="cm2";
+  const cm2=isPrim(PROFILE.level);
   switch(B.cat){
     case "I": return "Remplace par « mordre » ou « mordu ». « Mordre » marche : -er. « Mordu » marche : -é. Et après être, demande-toi « qui ? » pour accorder : -ée, -és, -ées.";
     case "H": return cm2?"Remplace pour vérifier. a / à : « avait ». et / est : « était ». on / ont : « il » ou « avaient ». son / sont : « mon » ou « étaient ».":"Remplace pour vérifier : c'est / s'est (cela est ?), leur / leurs (plusieurs ?), quand / quant (lorsque ?), près / prêt (préparé ?).";
@@ -2940,7 +3451,7 @@ if("speechSynthesis" in window){try{speechSynthesis.getVoices()}catch(e){}}
 (function boot(){
   try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{}) }catch(e){}
   const imp=importWordsFromHash(), who=loadWho();
-  if(who.name){ PROFILES.eleve.name=who.name; selectProfile("eleve","cm2") } else welcome();
+  if(who.name){ PROFILES.eleve.name=who.name; selectProfile("eleve",savedLevel()) } else welcome();
   if(imp) setTimeout(()=>announceImport(imp),400);
 })();
 </script>

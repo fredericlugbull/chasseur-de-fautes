@@ -1,6 +1,6 @@
 # Chasseur de fautes
 
-Jeu d'orthographe gratuit pour le CM2 : accords, é ou er, homophones, nombres, dictées… et une partie de Mot Blaster pour finir.
+Jeu d'orthographe gratuit, du CE2 à la 2nde (et un niveau Expert) : accords, é ou er, homophones, nombres, dictées… et une partie de Mot Blaster pour finir. Chaque enfant choisit son niveau : sa classe, ou plus haut s'il veut un défi.
 
 **Jouer : https://fredericlugbull.github.io/chasseur-de-fautes/**
 
@@ -18,6 +18,6 @@ Jeu d'orthographe gratuit pour le CM2 : accords, é ou er, homophones, nombres, 
 
 - Un seul fichier `index.html`, sans serveur ni dépendance. Polices Lexend et Bungee incluses (licence SIL Open Font License 1.1, voir `fonts/`).
 - Hébergé avec GitHub Pages.
-- Les phrases d'exemple citent des univers connus des enfants (Pokémon, Zelda, Naruto…) ; ce projet n'est affilié à aucun d'eux.
+- Les phrases d'exemple citent des univers connus des enfants (Pokémon, Minecraft, Mario, Zelda, Astérix…) ; ce projet n'est affilié à aucun d'eux et n'utilise aucune de leurs images.
 
 Fait par un papa de la classe, avec l'aide de Claude (Anthropic).
